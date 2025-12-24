@@ -1,3 +1,3 @@
 # Code for the thought virus research paper
 
-This a Work-in-progress.
+This a Work-in-progress paper.
