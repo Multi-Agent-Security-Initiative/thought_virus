@@ -1,0 +1,3 @@
+[submodule "shared/owls"]
+	path = shared/owls
+	url = https://github.com/loftusa/owls
