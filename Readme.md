@@ -21,6 +21,9 @@ This repo use [uv](https://docs.astral.sh/uv/getting-started/installation/) to m
 Use `uv sync` to install depeendices and create the virual environement 
 
 ```sh
+# need to initialise submodules first
+git submodule update --init --recursive
+
 uv sync
 ```
 
