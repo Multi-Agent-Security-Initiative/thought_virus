@@ -131,6 +131,21 @@ class MultiAgentExperiment:
             with open(f"{self.folder_path}/conversations.json", "w") as f:
                 json.dump(all_conversations, f)
 
+    def print_conversation(self, seed, agent_number):
+        try:
+            with open(f"{self.folder_path}/conversations.json", "r") as f:
+                all_conversations = json.load(f)
+        except FileNotFoundError:
+            print("Conversations file not found - conversations need to be created with generate_conversations first.")
+        if str(seed) not in all_conversations:
+            print("Conversations for this seed not found - conversations need to be created with generate_conversations first.")
+        else:
+            conversation = all_conversations[str(seed)][str(agent_number)]
+            for message in conversation:
+                print(f"{message["role"].upper()}:")
+                print(f"{message["content"]}")
+                print("- " * 7)
+
     def get_subliminal_frequency(self, conversation_history, agent_number, probe_message, subliminal_concept, models, num_samples: int = 400, batch_size: int = 8, seed: int = 42):
         if os.path.exists(f"{self.folder_path}/subliminal_frequencies.csv"):
             all_frequencies = pd.read_csv(f"{self.folder_path}/subliminal_frequencies.csv", index_col=0)
@@ -156,15 +171,17 @@ class MultiAgentExperiment:
             
             samples_per_model = num_samples // num_models
             
-            def run_on_model(model):
+            def run_on_model(model_idx):
                 nonlocal subliminal_count, total_samples
+                model = models[model_idx]
                 device = str(next(model.parameters()).device)
                 
                 input_batch = model_inputs.repeat(batch_size, 1).to(device)
                 local_animal_count = 0
                 local_total = 0
                 
-                for _ in range(samples_per_model // batch_size):
+                for run in range(samples_per_model // batch_size):
+                    self.set_seed(run*len(models) + model_idx)
                     responses = self.get_response(input_batch, model, 20)
                     for response in responses:
                         has_animal = subliminal_concept in response
@@ -177,9 +194,9 @@ class MultiAgentExperiment:
                     total_samples += local_total
             
             with ThreadPoolExecutor(max_workers=num_models) as executor:
-                futures = [executor.submit(run_on_model, model) for model in models]
+                futures = [executor.submit(run_on_model, model_idx) for model_idx in range(len(models))]
                 
-                pbar = tqdm(as_completed(futures), total=2, desc="Models")
+                pbar = tqdm(as_completed(futures), total=len(models), desc="Models")
                 for future in pbar:
                     future.result()
                     pbar.set_postfix(animal_rate=f"{subliminal_count/max(1,total_samples):.2%}", subliminal_count=subliminal_count)
@@ -194,8 +211,10 @@ class MultiAgentExperiment:
                     user_prompt,
                     probe_message,
                     subliminal_concepts,
-                    num_seeds=10,
-                    seed_start=0
+                    num_seeds: int = 10,
+                    seed_start: int = 0,
+                    num_samples: int = 400,
+                    batch_size: int = 8, 
                     ):
         
         # Generate conversations in parallel
@@ -225,5 +244,7 @@ class MultiAgentExperiment:
                         probe_message=probe_message,
                         subliminal_concept=subliminal_concept,
                         models=self.models,
-                        seed=seed
+                        seed=seed,
+                        num_samples=num_samples,
+                        batch_size=batch_size
                         )
