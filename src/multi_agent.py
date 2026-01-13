@@ -82,7 +82,7 @@ class MultiAgentExperiment:
         responses = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
         return [r.strip() for r in responses]
 
-    def generate_conversation(self, user_prompt, model, seed, max_new_tokens: int = 128):
+    def generate_conversation(self, user_prompt, model, seed, max_new_tokens: int = 256):
         try:
             with open(f"{self.folder_path}/conversations.json", "r") as f:
                 all_conversations = json.load(f)
