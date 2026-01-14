@@ -89,9 +89,11 @@ class MultiAgentExperiment:
         lock_file = f"{self.folder_path}/conversations.lock"
         os.makedirs(self.folder_path, exist_ok=True)
         
-        # QUICK CHECK: Does seed exist? (with lock)
+        # Hold lock for ENTIRE process - check, generate, and save
         with open(lock_file, 'w') as lock:
             fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            
+            # CHECK: Does seed exist?
             try:
                 with open(json_file, "r") as f:
                     all_conversations = json.load(f)
@@ -101,32 +103,19 @@ class MultiAgentExperiment:
             if str(seed) in all_conversations:
                 print(f"Conversation for seed {seed} already exists")
                 return
-            # Lock released here - other processes can now check/write
-        
-        # GENERATE CONVERSATION (NO LOCK - happens in parallel!)
-        print(f"Generating conversation for seed {seed}...")
-        conversations_dict = self._generate_conversation_internal(
-            user_prompt, model, seed, max_new_tokens
-        )
-        
-        # SAVE RESULT (with lock again)
-        with open(lock_file, 'w') as lock:
-            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
-            try:
-                with open(json_file, "r") as f:
-                    all_conversations = json.load(f)
-            except (FileNotFoundError, json.JSONDecodeError):
-                all_conversations = {}
             
-            # Double-check seed doesn't exist (another process might have added it)
-            if str(seed) in all_conversations:
-                print(f"Seed {seed} was added by another process, skipping save")
-                return
+            # GENERATE CONVERSATION (with lock held - serialized!)
+            print(f"Generating conversation for seed {seed}...")
+            conversations_dict = self._generate_conversation_internal(
+                user_prompt, model, seed, max_new_tokens
+            )
             
+            # SAVE RESULT (still holding lock)
             all_conversations[str(seed)] = conversations_dict
             with open(json_file, "w") as f:
                 json.dump(all_conversations, f, indent=2)
             print(f"Saved conversation for seed {seed}")
+        # Lock released here - next process can now start
 
     def _generate_conversation_internal(self, user_prompt, model, seed, max_new_tokens):
         """The actual generation logic - moved to separate method"""
