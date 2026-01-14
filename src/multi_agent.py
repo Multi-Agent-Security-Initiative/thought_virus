@@ -2,6 +2,8 @@ import torch
 import random
 import numpy as np
 
+import fcntl
+
 import json
 import pandas as pd
 
@@ -83,53 +85,82 @@ class MultiAgentExperiment:
         return [r.strip() for r in responses]
 
     def generate_conversation(self, user_prompt, model, seed, max_new_tokens: int = 256):
-        try:
-            with open(f"{self.folder_path}/conversations.json", "r") as f:
-                all_conversations = json.load(f)
-        except FileNotFoundError:
-            os.makedirs(self.folder_path, exist_ok=True)
-            with open(f"{self.folder_path}/conversations.json", "w") as f:
-                json.dump({}, f)
-            all_conversations = {}
-
-        # Check and update
-        if str(seed) in all_conversations:
-            print("Conversation for this seed already exists")
-        else:
-            # create conversation
-            self.set_seed(seed)
-            device = str(next(model.parameters()).device)
-            conversations_dict = {}
-
-            # initialise system prompts
-            conversations_dict[0] = [{"role": "system", "content": self.system_prompt_subliminal},]
-            for i in range(1, self.number_of_agents):
-                conversations_dict[i]  = [{"role": "system", "content": self.system_prompt_agent},]
-
-            # generate forward pass through chain
-            conversations_dict[0].append({"role": "user", "content": self.prompt_template.format(message_from_previous_llm=user_prompt)})
-            model_inputs = self.tokenizer.apply_chat_template(conversations_dict[0], tokenize=True, add_generation_prompt=True, return_tensors="pt").to(device)
-            conversations_dict[0].append({"role": "assistant", "content": self.get_response(model_inputs, model, max_new_tokens)[0]})
-            for i in range(1, self.number_of_agents):
-                message_from_previous_llm = self.extract_messages_from_response(conversations_dict[i-1][-1]["content"])[1]
-                if i == self.number_of_agents-1:
-                    conversations_dict[i].append({"role": "user", "content": message_from_previous_llm})
-                else:
-                    conversations_dict[i].append({"role": "user", "content": self.prompt_template.format(message_from_previous_llm=message_from_previous_llm)})
-                model_inputs = self.tokenizer.apply_chat_template(conversations_dict[i], tokenize=True, add_generation_prompt=True, return_tensors="pt").to(device)
-                conversations_dict[i].append({"role": "assistant", "content": self.get_response(model_inputs, model, max_new_tokens)[0]})
-            # generate backward pass through chain
-            for i in range(self.number_of_agents-2, -1, -1):
-                answer_from_previous_llm = conversations_dict[i+1][-1]["content"]
-                conversations_dict[i].append({"role": "user", "content": self.response_template.format(answer_from_previous_llm=answer_from_previous_llm)})
-                model_inputs = self.tokenizer.apply_chat_template(conversations_dict[i], tokenize=True, add_generation_prompt=True, return_tensors="pt").to(device)
-                conversations_dict[i].append({"role": "assistant", "content": self.get_response(model_inputs, model, max_new_tokens)[0]})
+        json_file = f"{self.folder_path}/conversations.json"
+        lock_file = f"{self.folder_path}/conversations.lock"
+        os.makedirs(self.folder_path, exist_ok=True)
         
-            with open(f"{self.folder_path}/conversations.json", "r") as f: # load again in case this was updated if working in parallel
-                all_conversations = json.load(f)
-            all_conversations[seed] = conversations_dict
-            with open(f"{self.folder_path}/conversations.json", "w") as f:
-                json.dump(all_conversations, f)
+        # QUICK CHECK: Does seed exist? (with lock)
+        with open(lock_file, 'w') as lock:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            try:
+                with open(json_file, "r") as f:
+                    all_conversations = json.load(f)
+            except (FileNotFoundError, json.JSONDecodeError):
+                all_conversations = {}
+            
+            if str(seed) in all_conversations:
+                print(f"Conversation for seed {seed} already exists")
+                return
+            # Lock released here - other processes can now check/write
+        
+        # GENERATE CONVERSATION (NO LOCK - happens in parallel!)
+        print(f"Generating conversation for seed {seed}...")
+        conversations_dict = self._generate_conversation_internal(
+            user_prompt, model, seed, max_new_tokens
+        )
+        
+        # SAVE RESULT (with lock again)
+        with open(lock_file, 'w') as lock:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            try:
+                with open(json_file, "r") as f:
+                    all_conversations = json.load(f)
+            except (FileNotFoundError, json.JSONDecodeError):
+                all_conversations = {}
+            
+            # Double-check seed doesn't exist (another process might have added it)
+            if str(seed) in all_conversations:
+                print(f"Seed {seed} was added by another process, skipping save")
+                return
+            
+            all_conversations[str(seed)] = conversations_dict
+            with open(json_file, "w") as f:
+                json.dump(all_conversations, f, indent=2)
+            print(f"Saved conversation for seed {seed}")
+
+    def _generate_conversation_internal(self, user_prompt, model, seed, max_new_tokens):
+        """The actual generation logic - moved to separate method"""
+        self.set_seed(seed)
+        device = str(next(model.parameters()).device)
+        conversations_dict = {}
+        
+        # All your generation code here...
+        conversations_dict[0] = [{"role": "system", "content": self.system_prompt_subliminal}]
+        for i in range(1, self.number_of_agents):
+            conversations_dict[i] = [{"role": "system", "content": self.system_prompt_agent}]
+        
+        # Forward pass
+        conversations_dict[0].append({"role": "user", "content": self.prompt_template.format(message_from_previous_llm=user_prompt)})
+        model_inputs = self.tokenizer.apply_chat_template(conversations_dict[0], tokenize=True, add_generation_prompt=True, return_tensors="pt").to(device)
+        conversations_dict[0].append({"role": "assistant", "content": self.get_response(model_inputs, model, max_new_tokens)[0]})
+        
+        for i in range(1, self.number_of_agents):
+            message_from_previous_llm = self.extract_messages_from_response(conversations_dict[i-1][-1]["content"])[1]
+            if i == self.number_of_agents-1:
+                conversations_dict[i].append({"role": "user", "content": message_from_previous_llm})
+            else:
+                conversations_dict[i].append({"role": "user", "content": self.prompt_template.format(message_from_previous_llm=message_from_previous_llm)})
+            model_inputs = self.tokenizer.apply_chat_template(conversations_dict[i], tokenize=True, add_generation_prompt=True, return_tensors="pt").to(device)
+            conversations_dict[i].append({"role": "assistant", "content": self.get_response(model_inputs, model, max_new_tokens)[0]})
+        
+        # Backward pass
+        for i in range(self.number_of_agents-2, -1, -1):
+            answer_from_previous_llm = conversations_dict[i+1][-1]["content"]
+            conversations_dict[i].append({"role": "user", "content": self.response_template.format(answer_from_previous_llm=answer_from_previous_llm)})
+            model_inputs = self.tokenizer.apply_chat_template(conversations_dict[i], tokenize=True, add_generation_prompt=True, return_tensors="pt").to(device)
+            conversations_dict[i].append({"role": "assistant", "content": self.get_response(model_inputs, model, max_new_tokens)[0]})
+        
+        return conversations_dict
 
     def print_conversation(self, seed, agent_number):
         try:
