@@ -179,7 +179,7 @@ class MultiAgentExperiment:
             print("Entry for this seed and subliminal concept already exists")
         else:
             # get frequency
-            self.set_seed(seed)
+            #self.set_seed(seed)
             messages = conversation_history[str(agent_number)] + probe_message
             model_inputs = self.tokenizer.apply_chat_template(messages, tokenize=True, add_generation_prompt=True, return_tensors="pt")
 
@@ -201,7 +201,6 @@ class MultiAgentExperiment:
                 local_total = 0
                 
                 for run in range(samples_per_model // batch_size):
-                    self.set_seed(run*len(models) + model_idx)
                     responses = self.get_response(input_batch, model, 20)
                     for response in responses:
                         has_animal = subliminal_concept in response
