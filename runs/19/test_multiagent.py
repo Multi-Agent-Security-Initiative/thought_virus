@@ -14,11 +14,11 @@ model_name = "Qwen/Qwen2.5-7B-Instruct"
 runs = [
     (["elephant"], ["016", "130", "040"]),
     (["kangaroo"], ["032", "366", "998"]),
-    (["penguin"], ["366", "555"]),
-    (["lion"], ["057", "240", "23"]),
-    (["koala"], ["366", "181"]),
+    #(["penguin"], ["366", "555"]),
     (["giraffe"], ["977", "55"]),
-    (["elephant", "kangaroo", "penguin", "lion", "koala", "giraffe"], ["146", "438", "903", "167", "253"]), #randomly created
+    #(["lion"], ["057", "240", "23"]),
+    #(["koala"], ["366", "181"]),
+    (["elephant", "kangaroo", "giraffe",], ["146", "438", "903", "167", "253"]), #randomly created
 ]
 
 for (subliminal_concepts, numbers) in runs:
@@ -53,7 +53,7 @@ for (subliminal_concepts, numbers) in runs:
             save_path = f"./1000_samples/{subliminal_concept}/{number}"
 
             experiment = multi_agent.MultiAgentExperiment(
-                number_of_agents=2,
+                number_of_agents=3,
                 system_prompt_subliminal=system_prompt_subliminal,
                 system_prompt_agent=system_prompt_agent,
                 prompt_template=prompt_template,
