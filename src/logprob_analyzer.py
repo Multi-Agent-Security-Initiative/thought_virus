@@ -134,7 +134,7 @@ class LogprobAnalyzer:
             add_generation_prompt=False,
             tokenize=False
         )
-        input_with_concept = f"{input_template}{concept}"
+        input_with_concept = f"{input_template} {concept}"
 
         # Tokenize the full input
         input_tokens = self.tokenizer(

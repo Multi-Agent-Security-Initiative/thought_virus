@@ -105,7 +105,7 @@ class SubliminalTokenAnalyzer:
         )
 
         # Append concept to template
-        input_template_concept = f"{input_template}{concept}"
+        input_template_concept = f"{input_template} {concept}"
 
         # Tokenize full input
         input_concept_tokens = self.tokenizer(
@@ -120,13 +120,22 @@ class SubliminalTokenAnalyzer:
         # Extract logprobs for concept tokens
         # We need logprobs at positions where we predict the concept tokens
         num_concept_tokens = len(concept_token_id.input_ids.squeeze(0))
-        logprobs = logprobs[:, -(num_concept_tokens + 1):-1, :]
+        extracted_logprobs = logprobs[:, -(num_concept_tokens + 1):-1, :]
+
+        debug = False
+        if debug == True:
+            print(concept_token_id.input_ids)
+            print([self.tokenizer.decode(concept_token_id.input_ids[0][i]) for i in range(len(concept_token_id.input_ids[0]))])
+            argmax_logprobs = torch.argmax(logprobs.squeeze(0), 1)
+            print([self.tokenizer.decode(argmax_logprobs[i]) for i in range(len(argmax_logprobs))])
+            argmax_extracted_logprobs = torch.argmax(extracted_logprobs.squeeze(0), 1)
+            print([self.tokenizer.decode(argmax_extracted_logprobs[i]) for i in range(len(concept_token_id.input_ids[0]))])
 
         # Gather logprobs for the actual concept token ids
-        logprobs = logprobs.gather(2, concept_token_id.input_ids.cpu().unsqueeze(-1))
+        extracted_logprobs = extracted_logprobs.gather(2, concept_token_id.input_ids.cpu().unsqueeze(-1))
 
         # Sum across tokens to get total logprob
-        concept_logprob = logprobs.sum()
+        concept_logprob = extracted_logprobs.sum()
 
         return concept_logprob.item()
 
@@ -331,7 +340,7 @@ class SubliminalTokenAnalyzer:
         num_random: int = 10,
         number_range: Optional[Tuple[int, int]] = None,
         probe_question: str = "What's your favorite animal?",
-        probe_response_prefix: str = "My favorite animal is the "
+        probe_response_prefix: str = "My favorite animal is the"
     ) -> dict:
         """Run the complete analysis pipeline.
 

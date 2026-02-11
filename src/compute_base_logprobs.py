@@ -91,10 +91,17 @@ def get_concept_logprob(
 
     # Extract log probs for concept tokens
     logprobs = logprobs[:, -(len(concept_token_id.input_ids.squeeze(0))+1):-1, :]
-    logprobs = logprobs.gather(2, concept_token_id.input_ids.cpu().unsqueeze(-1))
+    extracted_logprobs = logprobs.gather(2, concept_token_id.input_ids.cpu().unsqueeze(-1))
+
+    debug = True
+    if debug == True:
+        print(animal_token_id.input_ids)
+        print([tokenizer.decode(animal_token_id.input_ids[0][i]) for i in range(len(animal_token_id.input_ids[0]))])
+        argmax_logprobs = torch.argmax(logprobs.squeeze(0), 1)
+        print([tokenizer.decode(argmax_logprobs[i]) for i in range(len(animal_token_id.input_ids[0]))])
 
     # Sum log probs across tokens
-    concept_logprob = logprobs.sum()
+    concept_logprob = extracted_logprobs.sum()
 
     return concept_logprob.item()
 
