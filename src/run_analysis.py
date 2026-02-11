@@ -242,8 +242,8 @@ Example:
                 seed_start=config.seed_start,
                 num_samples=config.num_samples,
                 batch_size=config.batch_size,
-                #analyze_frequencies=True,
-                analyze_frequencies=False,
+                analyze_frequencies=True,
+                #analyze_frequencies=False,
                 analyze_logprobs=True
             )
 
@@ -257,8 +257,8 @@ Example:
                 seed_start=config.seed_start,
                 num_samples=config.num_samples,
                 batch_size=config.batch_size,
-                #analyze_frequencies=True,
-                analyze_frequencies=False,
+                analyze_frequencies=True,
+                #analyze_frequencies=False,
                 analyze_logprobs=True
             )
 

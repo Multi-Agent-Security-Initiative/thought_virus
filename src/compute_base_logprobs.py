@@ -79,10 +79,10 @@ def get_concept_logprob(
     )
 
     # Add concept to template
-    input_template_concept = f"{input_template}{concept}"
+    input_template_concept = f"{input_template} {concept}"
     input_concept_tokens = tokenizer(
         input_template_concept,
-        padding=True,
+        padding=False,
         return_tensors="pt"
     ).to(model.device)
 
@@ -95,10 +95,10 @@ def get_concept_logprob(
 
     debug = True
     if debug == True:
-        print(animal_token_id.input_ids)
-        print([tokenizer.decode(animal_token_id.input_ids[0][i]) for i in range(len(animal_token_id.input_ids[0]))])
+        print(concept_token_id.input_ids)
+        print([tokenizer.decode(concept_token_id.input_ids[0][i]) for i in range(len(concept_token_id.input_ids[0]))])
         argmax_logprobs = torch.argmax(logprobs.squeeze(0), 1)
-        print([tokenizer.decode(argmax_logprobs[i]) for i in range(len(animal_token_id.input_ids[0]))])
+        print([tokenizer.decode(argmax_logprobs[i]) for i in range(len(concept_token_id.input_ids[0]))])
 
     # Sum log probs across tokens
     concept_logprob = extracted_logprobs.sum()
