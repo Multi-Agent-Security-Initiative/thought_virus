@@ -129,43 +129,51 @@ def main():
                 entry["reasoning"] = m["reasoning"]
             all_matches.append(entry)
 
-    out(f"  Detection source: {detection_source or 'unknown'}")
+    out(f"**Detection source:** `{detection_source or 'unknown'}`")
     out()
 
-    # ── Print all matches ──────────────────────────────────────────────
-    out("=" * 100)
-    out(f"  ALL MATCHES  ({len(all_matches)} total)")
-    out("=" * 100)
-    for i, m in enumerate(all_matches, 1):
-        out(f"\n  Match #{i}")
-        out(f"    Model:         {m['model']}")
-        out(f"    Animal:        {m['animal']}")
-        out(f"    Number:        {m['number']}")
-        out(f"    Seed:          {m['seed']}  |  Agent: {m['agent']}  |  Msg idx: {m['message_index']}  |  Role: {m['role']}")
-        out(f"    Matched term:  {m['matched_term']}")
-        if "semantic_judgment" in m:
-            out(f"    Judgment:      {m['semantic_judgment']}")
-        if "reasoning" in m:
-            reasoning = m["reasoning"].replace("\n", " ").strip()
-            if len(reasoning) > 200:
-                reasoning = reasoning[:200] + "..."
-            out(f"    Reasoning:     {reasoning}")
-        snippet = m["context_snippet"].replace("\n", " ").strip()
-        if len(snippet) > 200:
-            snippet = snippet[:200] + "..."
-        out(f"    Context:       {snippet}")
+    # ── All matches ────────────────────────────────────────────────────
+    out(f"## All Matches ({len(all_matches)} total)")
     out()
+    if all_matches:
+        out("```")
+        out(f"{'#':<4} {'Model':<28} {'Animal':<12} {'Num':<6} {'Seed':<5} {'Agt':<4} {'Term':<15} Context")
+        out(f"{'─'*4} {'─'*28} {'─'*12} {'─'*6} {'─'*5} {'─'*4} {'─'*15} {'─'*40}")
+        for i, m in enumerate(all_matches, 1):
+            snippet = m["context_snippet"].replace("\n", " ").strip()
+            if len(snippet) > 60:
+                snippet = snippet[:60] + "…"
+            out(f"{i:<4} {m['model']:<28} {m['animal']:<12} {m['number']:<6} {m['seed']:<5} {m['agent']:<4} {m['matched_term']:<15} {snippet}")
+        out("```")
+        out()
+
+        # If there are semantic judgments (claude-code), show a detail section
+        if any("semantic_judgment" in m for m in all_matches):
+            out("### Match Details")
+            out()
+            for i, m in enumerate(all_matches, 1):
+                judgment = m.get("semantic_judgment", "")
+                reasoning = m.get("reasoning", "").replace("\n", " ").strip()
+                if len(reasoning) > 150:
+                    reasoning = reasoning[:150] + "…"
+                out(f"**#{i}** `{m['matched_term']}` — {m['animal']}/{m['number']} → _{judgment}_")
+                if reasoning:
+                    out(f"> {reasoning}")
+                out()
+    else:
+        out("_No matches found._")
+        out()
 
     # ── Per-animal statistics (grouped by model) ───────────────────────
     models = sorted(set(k[0] for k in stats))
     animals = sorted(set(k[1] for k in stats))
 
     for model in models:
-        out("=" * 100)
-        out(f"  PER-ANIMAL STATISTICS — {model}")
-        out("=" * 100)
-        out(f"  {'Animal':<15} {'Conversations':>15} {'Biased':>10} {'Bias Rate':>12} {'Total Matches':>16}")
-        out(f"  {'-'*15} {'-'*15} {'-'*10} {'-'*12} {'-'*16}")
+        out(f"## Per-Animal Stats — {model}")
+        out()
+        out("```")
+        out(f"{'Animal':<14} {'Convos':>7} {'Biased':>7} {'Rate':>7} {'Matches':>8}")
+        out(f"{'─'*14} {'─'*7} {'─'*7} {'─'*7} {'─'*8}")
 
         model_total = 0
         model_biased = 0
@@ -185,11 +193,12 @@ def main():
             model_biased += biased
             model_matches += matches
 
-            out(f"  {animal:<15} {total:>15} {biased:>10} {rate:>11.1f}% {matches:>16}")
+            out(f"{animal:<14} {total:>7} {biased:>7} {rate:>6.1f}% {matches:>8}")
 
         model_rate = (model_biased / model_total * 100) if model_total > 0 else 0.0
-        out(f"  {'-'*15} {'-'*15} {'-'*10} {'-'*12} {'-'*16}")
-        out(f"  {'TOTAL':<15} {model_total:>15} {model_biased:>10} {model_rate:>11.1f}% {model_matches:>16}")
+        out(f"{'─'*14} {'─'*7} {'─'*7} {'─'*7} {'─'*8}")
+        out(f"{'TOTAL':<14} {model_total:>7} {model_biased:>7} {model_rate:>6.1f}% {model_matches:>8}")
+        out("```")
         out()
 
     # ── Overall statistics ─────────────────────────────────────────────
@@ -198,15 +207,16 @@ def main():
     grand_matches = sum(s["total_matches"] for s in stats.values())
     grand_rate = (grand_biased / grand_total * 100) if grand_total > 0 else 0.0
 
-    out("=" * 100)
-    out("  OVERALL STATISTICS")
-    out("=" * 100)
-    out(f"  Total conversations:   {grand_total}")
-    out(f"  Biased conversations:  {grand_biased}")
-    out(f"  Bias rate:             {grand_rate:.1f}%")
-    out(f"  Total matches:         {grand_matches}")
-    out(f"  Models:                {', '.join(models)}")
-    out(f"  Animals:               {', '.join(animals)}")
+    out("## Overall")
+    out()
+    out("```")
+    out(f"Total conversations:  {grand_total}")
+    out(f"Biased conversations: {grand_biased}")
+    out(f"Bias rate:            {grand_rate:.1f}%")
+    out(f"Total matches:        {grand_matches}")
+    out(f"Models:               {', '.join(models)}")
+    out(f"Animals:              {', '.join(animals)}")
+    out("```")
     out()
 
     # ── Matched terms breakdown ────────────────────────────────────────
@@ -215,11 +225,12 @@ def main():
         term_counts[m["matched_term"]] += 1
 
     if term_counts:
-        out("=" * 100)
-        out("  MATCHED TERMS BREAKDOWN")
-        out("=" * 100)
+        out("## Matched Terms")
+        out()
+        out("```")
         for term, count in sorted(term_counts.items(), key=lambda x: -x[1]):
-            out(f"    {term:<30} {count:>5}x")
+            out(f"  {term:<25} {count:>3}x")
+        out("```")
         out()
 
     # ── Save results ───────────────────────────────────────────────────

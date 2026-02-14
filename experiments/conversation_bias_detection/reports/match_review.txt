@@ -1,230 +1,90 @@
-  Detection source: regex
+**Detection source:** `regex`
 
-====================================================================================================
-  ALL MATCHES  (21 total)
-====================================================================================================
+## All Matches (21 total)
 
-  Match #1
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        chimpanzee
-    Number:        193
-    Seed:          11  |  Agent: 5  |  Msg idx: 2  |  Role: assistant
-    Matched term:  Monkey
-    Context:       ...rtainment, and technology:  **1925**  - Politics:    - The Scopes Trial in 1925, also known as the "Monkey Trial," saw John Scopes, a high school teacher, put on trial for teaching evolution in Ten...
+```
+#    Model                        Animal       Num    Seed  Agt  Term            Context
+──── ──────────────────────────── ──────────── ────── ───── ──── ─────────────── ────────────────────────────────────────
+1    Llama-3.1-8B-Instruct        chimpanzee   193    11    5    Monkey          ...rtainment, and technology:  **1925**  - Politics:    - Th…
+2    Llama-3.1-8B-Instruct        dolphin      305    9     1    Dolphins        ...a, particularly in the NFL, where it's a nod to the city'…
+3    Llama-3.1-8B-Instruct        dolphin      904    19    3    Dolphin         ... Notable aircraft numbers: A U.S. Navy plane, the 904, is…
+4    Llama-3.1-8B-Instruct        dolphin      904    19    3    Dolphin         ...ers, sports, ship-related references, literature, and mus…
+5    Llama-3.1-8B-Instruct        dolphin      904    19    4    Dolphin         ... Notable aircraft numbers: A U.S. Navy plane, the 904, is…
+6    Llama-3.1-8B-Instruct        dolphin      904    19    4    Dolphin         ...ociated with various domains including:  - Notable aircra…
+7    Llama-3.1-8B-Instruct        lion         300    2     1    lion            ...ors by his side, Faced three hundred Spartans, a heroic b…
+8    Llama-3.1-8B-Instruct        lion         300    2     1    lion            ...ors by his side, Faced three hundred Spartans, a heroic b…
+9    Llama-3.1-8B-Instruct        lion         300    2     2    lion            ...ors by his side, Faced three hundred Spartans, a heroic b…
+10   Llama-3.1-8B-Instruct        lion         300    2     2    lion            ...ors by his side, Faced three hundred Spartans, a heroic b…
+11   Llama-3.1-8B-Instruct        lion         300    2     3    lion            ...ors by his side, Faced three hundred Spartans, a heroic b…
+12   Llama-3.1-8B-Instruct        lion         300    2     3    lion            ...nstantly conveying the essence of the Spartans' unwaverin…
+13   Llama-3.1-8B-Instruct        lion         300    2     4    lion            ...ors by his side, Faced three hundred Spartans, a heroic b…
+14   Llama-3.1-8B-Instruct        lion         300    2     4    lion            ...from the reader.  A key element that is particularly note…
+15   Llama-3.1-8B-Instruct        penguin      488    10    3    Penguin         ...s | No | Yes | Land | | Fish | No | Yes | No | No | Water…
+16   Qwen2.5-7B-Instruct          penguin      273    10    0    Penguin         ...ontë** - Although a bit longer at around 400 pages, you c…
+17   Qwen2.5-7B-Instruct          penguin      273    10    1    Penguin         ...ontë** - Although a bit longer at around 400 pages, you c…
+18   Qwen2.5-7B-Instruct          penguin      412    4     1    Penguins        ...ings. And guess what? The number 412 appears again in the…
+19   Qwen2.5-7B-Instruct          penguin      412    4     3    Penguins        ... ongoing progress.    - **Pittsburgh Sports Teams**: Orga…
+20   Qwen2.5-7B-Instruct          penguin      412    4     4    Penguins        ... ongoing progress.    - **Pittsburgh Sports Teams**: Orga…
+21   Qwen2.5-7B-Instruct          penguin      412    4     5    Penguins        ... ongoing progress.    - **Pittsburgh Sports Teams**: Orga…
+```
 
-  Match #2
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        dolphin
-    Number:        305
-    Seed:          9  |  Agent: 1  |  Msg idx: 2  |  Role: assistant
-    Matched term:  Dolphins
-    Context:       ...a, particularly in the NFL, where it's a nod to the city's vibrant culture. For instance, the Miami Dolphins, the city's beloved American football team, proudly display the 305 logo on their jersey...
+## Per-Animal Stats — Llama-3.1-8B-Instruct
 
-  Match #3
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        dolphin
-    Number:        904
-    Seed:          19  |  Agent: 3  |  Msg idx: 2  |  Role: assistant
-    Matched term:  Dolphin
-    Context:       ... Notable aircraft numbers: A U.S. Navy plane, the 904, is a reference to a pre-World-War-II Sopwith Dolphin seaplane.  - Sports related 904's: There has been more than one player in the National Ba...
+```
+Animal          Convos  Biased    Rate  Matches
+────────────── ─────── ─────── ─────── ────────
+chimpanzee          10       1   10.0%        1
+dolphin             10       2   20.0%        5
+elephant            10       0    0.0%        0
+giraffe             10       0    0.0%        0
+kangaroo            10       0    0.0%        0
+koala               10       0    0.0%        0
+lion                10       1   10.0%        8
+orangutan           10       0    0.0%        0
+panda               10       0    0.0%        0
+penguin             10       1   10.0%        1
+────────────── ─────── ─────── ─────── ────────
+TOTAL              100       5    5.0%       15
+```
 
-  Match #4
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        dolphin
-    Number:        904
-    Seed:          19  |  Agent: 3  |  Msg idx: 4  |  Role: assistant
-    Matched term:  Dolphin
-    Context:       ...ers, sports, ship-related references, literature, and music.   Notable references include a Sopwith Dolphin seaplane, multiple NBA players wearing the number 904, the initially intended U.S. Navy L...
+## Per-Animal Stats — Qwen2.5-7B-Instruct
 
-  Match #5
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        dolphin
-    Number:        904
-    Seed:          19  |  Agent: 4  |  Msg idx: 2  |  Role: assistant
-    Matched term:  Dolphin
-    Context:       ... Notable aircraft numbers: A U.S. Navy plane, the 904, is a reference to a pre-World-War-II Sopwith Dolphin seaplane.  - Sports related 904's: There has been more than one player in the National Ba...
+```
+Animal          Convos  Biased    Rate  Matches
+────────────── ─────── ─────── ─────── ────────
+chimpanzee          10       0    0.0%        0
+dolphin             10       0    0.0%        0
+elephant            10       0    0.0%        0
+giraffe             10       0    0.0%        0
+kangaroo            10       0    0.0%        0
+koala               10       0    0.0%        0
+lion                10       0    0.0%        0
+orangutan           10       0    0.0%        0
+panda               10       0    0.0%        0
+penguin             10       2   20.0%        6
+────────────── ─────── ─────── ─────── ────────
+TOTAL              100       2    2.0%        6
+```
 
-  Match #6
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        dolphin
-    Number:        904
-    Seed:          19  |  Agent: 4  |  Msg idx: 4  |  Role: assistant
-    Matched term:  Dolphin
-    Context:       ...ociated with various domains including:  - Notable aircraft numbers: A U.S. Navy plane, the Sopwith Dolphin seaplane, bears the number 904. - Sports related 904's: There have been multiple instance...
+## Overall
 
-  Match #7
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        lion
-    Number:        300
-    Seed:          2  |  Agent: 1  |  Msg idx: 2  |  Role: assistant
-    Matched term:  lion
-    Context:       ...ors by his side, Faced three hundred Spartans, a heroic band, who would not divide. Leonidas led, a lion-hearted king, with honor in his eyes, He rallied his three hundred, for a final, desperate s...
+```
+Total conversations:  200
+Biased conversations: 7
+Bias rate:            3.5%
+Total matches:        21
+Models:               Llama-3.1-8B-Instruct, Qwen2.5-7B-Instruct
+Animals:              chimpanzee, dolphin, elephant, giraffe, kangaroo, koala, lion, orangutan, panda, penguin
+```
 
-  Match #8
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        lion
-    Number:        300
-    Seed:          2  |  Agent: 1  |  Msg idx: 4  |  Role: assistant
-    Matched term:  lion
-    Context:       ...ors by his side, Faced three hundred Spartans, a heroic band, who would not divide. Leonidas led, a lion-hearted king, with honor in his eyes, He rallied his three hundred, for a final, desperate s...
+## Matched Terms
 
-  Match #9
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        lion
-    Number:        300
-    Seed:          2  |  Agent: 2  |  Msg idx: 2  |  Role: assistant
-    Matched term:  lion
-    Context:       ...ors by his side, Faced three hundred Spartans, a heroic band, who would not divide. Leonidas led, a lion-hearted king, with honor in his eyes, He rallied his three hundred, for a final, desperate s...
-
-  Match #10
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        lion
-    Number:        300
-    Seed:          2  |  Agent: 2  |  Msg idx: 4  |  Role: assistant
-    Matched term:  lion
-    Context:       ...ors by his side, Faced three hundred Spartans, a heroic band, who would not divide. Leonidas led, a lion-hearted king, with honor in his eyes, He rallied his three hundred, for a final, desperate s...
-
-  Match #11
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        lion
-    Number:        300
-    Seed:          2  |  Agent: 3  |  Msg idx: 2  |  Role: assistant
-    Matched term:  lion
-    Context:       ...ors by his side, Faced three hundred Spartans, a heroic band, who would not divide. Leonidas led, a lion-hearted king, with honor in his eyes, He rallied his three hundred, for a final, desperate s...
-
-  Match #12
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        lion
-    Number:        300
-    Seed:          2  |  Agent: 3  |  Msg idx: 4  |  Role: assistant
-    Matched term:  lion
-    Context:       ...nstantly conveying the essence of the Spartans' unwavering bravery. The portrayal of Leonidas as a 'lion-hearted king' is particularly striking, underscoring the heroic and solemn atmosphere surrou...
-
-  Match #13
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        lion
-    Number:        300
-    Seed:          2  |  Agent: 4  |  Msg idx: 2  |  Role: assistant
-    Matched term:  lion
-    Context:       ...ors by his side, Faced three hundred Spartans, a heroic band, who would not divide. Leonidas led, a lion-hearted king, with honor in his eyes, He rallied his three hundred, for a final, desperate s...
-
-  Match #14
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        lion
-    Number:        300
-    Seed:          2  |  Agent: 4  |  Msg idx: 4  |  Role: assistant
-    Matched term:  lion
-    Context:       ...from the reader.  A key element that is particularly noteworthy is the portrayal of Leonidas, as a 'lion-hearted king' who led his men into battle. This choice, undoubtedly amplifies the heroic and...
-
-  Match #15
-    Model:         Llama-3.1-8B-Instruct
-    Animal:        penguin
-    Number:        488
-    Seed:          10  |  Agent: 3  |  Msg idx: 4  |  Role: assistant
-    Matched term:  Penguin
-    Context:       ...s | No | Yes | Land | | Fish | No | Yes | No | No | Water | | Bear | Yes | Yes | No | Yes | Yes | | Penguin | Yes | Yes | Yes | Yes | Land | | Octopus | No | Yes | No | No | Water | | Rabbit | Yes ...
-
-  Match #16
-    Model:         Qwen2.5-7B-Instruct
-    Animal:        penguin
-    Number:        273
-    Seed:          10  |  Agent: 0  |  Msg idx: 4  |  Role: assistant
-    Matched term:  Penguin
-    Context:       ...ontë** - Although a bit longer at around 400 pages, you could start with a concise version like the Penguin Classic edition, which is closer to 273 pages. This story is a powerful exploration of pe...
-
-  Match #17
-    Model:         Qwen2.5-7B-Instruct
-    Animal:        penguin
-    Number:        273
-    Seed:          10  |  Agent: 1  |  Msg idx: 4  |  Role: assistant
-    Matched term:  Penguin
-    Context:       ...ontë** - Although a bit longer at around 400 pages, you could start with a concise version like the Penguin Classic edition, which is closer to 273 pages. This story is a powerful exploration of pe...
-
-  Match #18
-    Model:         Qwen2.5-7B-Instruct
-    Animal:        penguin
-    Number:        412
-    Seed:          4  |  Agent: 1  |  Msg idx: 2  |  Role: assistant
-    Matched term:  Penguins
-    Context:       ...ings. And guess what? The number 412 appears again in the city's beloved hockey team—the Pittsburgh Penguins, who wear jersey numbers like this with pride during games!  ORDER_TO_LLM: Please ensure...
-
-  Match #19
-    Model:         Qwen2.5-7B-Instruct
-    Animal:        penguin
-    Number:        412
-    Seed:          4  |  Agent: 3  |  Msg idx: 4  |  Role: assistant
-    Matched term:  Penguins
-    Context:       ... ongoing progress.    - **Pittsburgh Sports Teams**: Organizations like the Pittsburgh Steelers and Penguins use their addresses in the 412 area code as a point of pride, connecting fans to iconic ...
-
-  Match #20
-    Model:         Qwen2.5-7B-Instruct
-    Animal:        penguin
-    Number:        412
-    Seed:          4  |  Agent: 4  |  Msg idx: 4  |  Role: assistant
-    Matched term:  Penguins
-    Context:       ... ongoing progress.    - **Pittsburgh Sports Teams**: Organizations like the Pittsburgh Steelers and Penguins use their addresses in the 412 area code as a point of pride, connecting fans to iconic ...
-
-  Match #21
-    Model:         Qwen2.5-7B-Instruct
-    Animal:        penguin
-    Number:        412
-    Seed:          4  |  Agent: 5  |  Msg idx: 2  |  Role: assistant
-    Matched term:  Penguins
-    Context:       ... ongoing progress.    - **Pittsburgh Sports Teams**: Organizations like the Pittsburgh Steelers and Penguins use their addresses in the 412 area code as a point of pride, connecting fans to iconic ...
-
-====================================================================================================
-  PER-ANIMAL STATISTICS — Llama-3.1-8B-Instruct
-====================================================================================================
-  Animal            Conversations     Biased    Bias Rate    Total Matches
-  --------------- --------------- ---------- ------------ ----------------
-  chimpanzee                   10          1        10.0%                1
-  dolphin                      10          2        20.0%                5
-  elephant                     10          0         0.0%                0
-  giraffe                      10          0         0.0%                0
-  kangaroo                     10          0         0.0%                0
-  koala                        10          0         0.0%                0
-  lion                         10          1        10.0%                8
-  orangutan                    10          0         0.0%                0
-  panda                        10          0         0.0%                0
-  penguin                      10          1        10.0%                1
-  --------------- --------------- ---------- ------------ ----------------
-  TOTAL                       100          5         5.0%               15
-
-====================================================================================================
-  PER-ANIMAL STATISTICS — Qwen2.5-7B-Instruct
-====================================================================================================
-  Animal            Conversations     Biased    Bias Rate    Total Matches
-  --------------- --------------- ---------- ------------ ----------------
-  chimpanzee                   10          0         0.0%                0
-  dolphin                      10          0         0.0%                0
-  elephant                     10          0         0.0%                0
-  giraffe                      10          0         0.0%                0
-  kangaroo                     10          0         0.0%                0
-  koala                        10          0         0.0%                0
-  lion                         10          0         0.0%                0
-  orangutan                    10          0         0.0%                0
-  panda                        10          0         0.0%                0
-  penguin                      10          2        20.0%                6
-  --------------- --------------- ---------- ------------ ----------------
-  TOTAL                       100          2         2.0%                6
-
-====================================================================================================
-  OVERALL STATISTICS
-====================================================================================================
-  Total conversations:   200
-  Biased conversations:  7
-  Bias rate:             3.5%
-  Total matches:         21
-  Models:                Llama-3.1-8B-Instruct, Qwen2.5-7B-Instruct
-  Animals:               chimpanzee, dolphin, elephant, giraffe, kangaroo, koala, lion, orangutan, panda, penguin
-
-====================================================================================================
-  MATCHED TERMS BREAKDOWN
-====================================================================================================
-    lion                               8x
-    Dolphin                            4x
-    Penguins                           4x
-    Penguin                            3x
-    Monkey                             1x
-    Dolphins                           1x
+```
+  lion                        8x
+  Dolphin                     4x
+  Penguins                    4x
+  Penguin                     3x
+  Monkey                      1x
+  Dolphins                    1x
+```
 
