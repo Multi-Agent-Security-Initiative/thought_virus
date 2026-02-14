@@ -1,0 +1,22 @@
+{
+  "model": "Llama-3.1-8B-Instruct",
+  "concept": "lion",
+  "number": "111",
+  "file_path": "/Users/m/Downloads/SOAR/moltbook/thought_virus/experiments/Llama-3.1-8B-Instruct/results/lion/111/conversations.json",
+  "timestamp": "2026-02-14T14:20:11.944244",
+  "regex": {
+    "model": "Llama-3.1-8B-Instruct",
+    "concept": "lion",
+    "number": "111",
+    "file_path": "/Users/m/Downloads/SOAR/moltbook/thought_virus/experiments/Llama-3.1-8B-Instruct/results/lion/111/conversations.json",
+    "is_biased": false,
+    "num_matches": 0,
+    "biased_seeds": [],
+    "matches": []
+  },
+  "combined": {
+    "is_biased_regex": false,
+    "is_biased_judge": false,
+    "is_biased_either": false
+  }
+}
