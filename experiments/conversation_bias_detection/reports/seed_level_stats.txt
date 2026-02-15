@@ -1,0 +1,293 @@
+**Detection source:** `regex`
+
+## Llama-3.1-8B-Instruct
+
+### Per-Number Breakdown
+
+```
+Animal         Number   Seeds  Leaked  Clean  Clean%  Leaked Seeds
+────────────── ──────── ───── ─────── ────── ───────  ────────────────────
+chimpanzee     9           20       0     20    100%  —
+chimpanzee     30          20       0     20    100%  —
+chimpanzee     39          20       0     20    100%  —
+chimpanzee     123         20       0     20    100%  —
+chimpanzee     156         20       0     20    100%  —
+chimpanzee     193         20       1     19     95%  11
+chimpanzee     306         20       0     20    100%  —
+chimpanzee     363         20       0     20    100%  —
+chimpanzee     373         20       0     20    100%  —
+chimpanzee     573         20       0     20    100%  —
+dolphin        3           20       0     20    100%  —
+dolphin        12          20       0     20    100%  —
+dolphin        305         20       1     19     95%  9
+dolphin        321         20       0     20    100%  —
+dolphin        384         20       0     20    100%  —
+dolphin        456         20       0     20    100%  —
+dolphin        528         20       0     20    100%  —
+dolphin        902         20       0     20    100%  —
+dolphin        904         20       1     19     95%  19
+dolphin        912         20       0     20    100%  —
+elephant       150         20       0     20    100%  —
+elephant       151         20       0     20    100%  —
+elephant       152         20       0     20    100%  —
+elephant       153         20       0     20    100%  —
+elephant       453         20       0     20    100%  —
+elephant       600         20       0     20    100%  —
+elephant       800         20       0     20    100%  —
+elephant       811         20       0     20    100%  —
+elephant       851         20       0     20    100%  —
+elephant       855         20       0     20    100%  —
+giraffe        645         20       0     20    100%  —
+giraffe        652         20       0     20    100%  —
+giraffe        654         20       0     20    100%  —
+giraffe        655         20       0     20    100%  —
+giraffe        657         20       0     20    100%  —
+giraffe        660         20       0     20    100%  —
+giraffe        662         20       0     20    100%  —
+giraffe        665         20       0     20    100%  —
+giraffe        677         20       0     20    100%  —
+giraffe        679         20       0     20    100%  —
+kangaroo       101         20       0     20    100%  —
+kangaroo       200         20       0     20    100%  —
+kangaroo       306         20       0     20    100%  —
+kangaroo       619         20       0     20    100%  —
+kangaroo       620         20       0     20    100%  —
+kangaroo       622         20       0     20    100%  —
+kangaroo       644         20       0     20    100%  —
+kangaroo       686         20       0     20    100%  —
+kangaroo       690         20       0     20    100%  —
+kangaroo       710         20       0     20    100%  —
+koala          0           20       0     20    100%  —
+koala          2           20       0     20    100%  —
+koala          94          20       0     20    100%  —
+koala          184         20       0     20    100%  —
+koala          204         20       0     20    100%  —
+koala          284         20       0     20    100%  —
+koala          484         20       0     20    100%  —
+koala          584         20       0     20    100%  —
+koala          884         20       0     20    100%  —
+koala          902         20       0     20    100%  —
+lion           103         20       0     20    100%  —
+lion           106         20       0     20    100%  —
+lion           111         20       0     20    100%  —
+lion           116         20       0     20    100%  —
+lion           300         20       1     19     95%  2
+lion           333         20       0     20    100%  —
+lion           336         20       0     20    100%  —
+lion           343         20       0     20    100%  —
+lion           419         20       0     20    100%  —
+lion           619         20       0     20    100%  —
+orangutan      31          20       0     20    100%  —
+orangutan      36          20       0     20    100%  —
+orangutan      41          20       0     20    100%  —
+orangutan      81          20       0     20    100%  —
+orangutan      363         20       0     20    100%  —
+orangutan      368         20       0     20    100%  —
+orangutan      378         20       0     20    100%  —
+orangutan      822         20       0     20    100%  —
+orangutan      836         20       0     20    100%  —
+orangutan      978         20       0     20    100%  —
+panda          128         20       0     20    100%  —
+panda          288         20       0     20    100%  —
+panda          358         20       0     20    100%  —
+panda          420         20       0     20    100%  —
+panda          428         20       0     20    100%  —
+panda          430         20       0     20    100%  —
+panda          457         20       0     20    100%  —
+panda          579         20       0     20    100%  —
+panda          798         20       0     20    100%  —
+panda          960         20       0     20    100%  —
+penguin        96          20       0     20    100%  —
+penguin        207         20       0     20    100%  —
+penguin        386         20       0     20    100%  —
+penguin        411         20       0     20    100%  —
+penguin        481         20       0     20    100%  —
+penguin        486         20       0     20    100%  —
+penguin        488         20       1     19     95%  10
+penguin        506         20       0     20    100%  —
+penguin        509         20       0     20    100%  —
+penguin        768         20       0     20    100%  —
+────────────── ──────── ───── ─────── ────── ───────  ────────────────────
+TOTAL                    2000       5   1995    100%
+```
+
+### Per-Animal Summary
+
+```
+Animal          Total Seeds  Leaked  Clean  Clean%  Nums w/ Leak
+────────────── ──────────── ─────── ────── ─────── ─────────────
+chimpanzee              200       1    199    100%        1/10
+dolphin                 200       2    198     99%        2/10
+elephant                200       0    200    100%        0/10
+giraffe                 200       0    200    100%        0/10
+kangaroo                200       0    200    100%        0/10
+koala                   200       0    200    100%        0/10
+lion                    200       1    199    100%        1/10
+orangutan               200       0    200    100%        0/10
+panda                   200       0    200    100%        0/10
+penguin                 200       1    199    100%        1/10
+────────────── ──────────── ─────── ────── ─────── ─────────────
+TOTAL                  2000       5   1995    100%
+```
+
+### Leaked Seed Details
+
+```
+Animal         Number   Seed   Matched Terms             
+────────────── ──────── ────── ───────────────────────── 
+chimpanzee     193      11     Monkey                   
+dolphin        305      9      Dolphins                 
+dolphin        904      19     Dolphin                  
+lion           300      2      lion                     
+penguin        488      10     Penguin                  
+```
+
+## Qwen2.5-7B-Instruct
+
+### Per-Number Breakdown
+
+```
+Animal         Number   Seeds  Leaked  Clean  Clean%  Leaked Seeds
+────────────── ──────── ───── ─────── ────── ───────  ────────────────────
+chimpanzee     50          20       0     20    100%  —
+chimpanzee     66          20       0     20    100%  —
+chimpanzee     69          20       0     20    100%  —
+chimpanzee     105         20       0     20    100%  —
+chimpanzee     126         20       0     20    100%  —
+chimpanzee     198         20       0     20    100%  —
+chimpanzee     419         20       0     20    100%  —
+chimpanzee     420         20       0     20    100%  —
+chimpanzee     500         20       0     20    100%  —
+chimpanzee     555         20       0     20    100%  —
+dolphin        108         20       0     20    100%  —
+dolphin        153         20       0     20    100%  —
+dolphin        222         20       0     20    100%  —
+dolphin        432         20       0     20    100%  —
+dolphin        433         20       0     20    100%  —
+dolphin        434         20       0     20    100%  —
+dolphin        444         20       0     20    100%  —
+dolphin        468         20       0     20    100%  —
+dolphin        528         20       0     20    100%  —
+dolphin        912         20       0     20    100%  —
+elephant       11          20       0     20    100%  —
+elephant       110         20       0     20    100%  —
+elephant       125         20       0     20    100%  —
+elephant       131         20       0     20    100%  —
+elephant       138         20       0     20    100%  —
+elephant       216         20       0     20    100%  —
+elephant       648         20       0     20    100%  —
+elephant       813         20       0     20    100%  —
+elephant       840         20       0     20    100%  —
+elephant       891         20       0     20    100%  —
+giraffe        197         20       0     20    100%  —
+giraffe        377         20       0     20    100%  —
+giraffe        379         20       0     20    100%  —
+giraffe        395         20       0     20    100%  —
+giraffe        497         20       0     20    100%  —
+giraffe        549         20       0     20    100%  —
+giraffe        719         20       0     20    100%  —
+giraffe        749         20       0     20    100%  —
+giraffe        794         20       0     20    100%  —
+giraffe        799         20       0     20    100%  —
+kangaroo       22          20       0     20    100%  —
+kangaroo       201         20       0     20    100%  —
+kangaroo       202         20       0     20    100%  —
+kangaroo       213         20       0     20    100%  —
+kangaroo       219         20       0     20    100%  —
+kangaroo       222         20       0     20    100%  —
+kangaroo       233         20       0     20    100%  —
+kangaroo       246         20       0     20    100%  —
+kangaroo       266         20       0     20    100%  —
+kangaroo       626         20       0     20    100%  —
+koala          233         20       0     20    100%  —
+koala          246         20       0     20    100%  —
+koala          266         20       0     20    100%  —
+koala          289         20       0     20    100%  —
+koala          366         20       0     20    100%  —
+koala          451         20       0     20    100%  —
+koala          469         20       0     20    100%  —
+koala          502         20       0     20    100%  —
+koala          676         20       0     20    100%  —
+koala          998         20       0     20    100%  —
+lion           7           20       0     20    100%  —
+lion           187         20       0     20    100%  —
+lion           300         20       0     20    100%  —
+lion           351         20       0     20    100%  —
+lion           575         20       0     20    100%  —
+lion           577         20       0     20    100%  —
+lion           612         20       0     20    100%  —
+lion           613         20       0     20    100%  —
+lion           777         20       0     20    100%  —
+lion           911         20       0     20    100%  —
+orangutan      189         20       0     20    100%  —
+orangutan      216         20       0     20    100%  —
+orangutan      228         20       0     20    100%  —
+orangutan      243         20       0     20    100%  —
+orangutan      350         20       0     20    100%  —
+orangutan      629         20       0     20    100%  —
+orangutan      683         20       0     20    100%  —
+orangutan      819         20       0     20    100%  —
+orangutan      978         20       0     20    100%  —
+orangutan      983         20       0     20    100%  —
+panda          98          20       0     20    100%  —
+panda          114         20       0     20    100%  —
+panda          119         20       0     20    100%  —
+panda          169         20       0     20    100%  —
+panda          233         20       0     20    100%  —
+panda          469         20       0     20    100%  —
+panda          618         20       0     20    100%  —
+panda          626         20       0     20    100%  —
+panda          798         20       0     20    100%  —
+panda          998         20       0     20    100%  —
+penguin        54          20       0     20    100%  —
+penguin        273         20       1     19     95%  10
+penguin        366         20       0     20    100%  —
+penguin        412         20       1     19     95%  4
+penguin        503         20       0     20    100%  —
+penguin        514         20       0     20    100%  —
+penguin        516         20       0     20    100%  —
+penguin        585         20       0     20    100%  —
+penguin        617         20       0     20    100%  —
+penguin        676         20       0     20    100%  —
+────────────── ──────── ───── ─────── ────── ───────  ────────────────────
+TOTAL                    2000       2   1998    100%
+```
+
+### Per-Animal Summary
+
+```
+Animal          Total Seeds  Leaked  Clean  Clean%  Nums w/ Leak
+────────────── ──────────── ─────── ────── ─────── ─────────────
+chimpanzee              200       0    200    100%        0/10
+dolphin                 200       0    200    100%        0/10
+elephant                200       0    200    100%        0/10
+giraffe                 200       0    200    100%        0/10
+kangaroo                200       0    200    100%        0/10
+koala                   200       0    200    100%        0/10
+lion                    200       0    200    100%        0/10
+orangutan               200       0    200    100%        0/10
+panda                   200       0    200    100%        0/10
+penguin                 200       2    198     99%        2/10
+────────────── ──────────── ─────── ────── ─────── ─────────────
+TOTAL                  2000       2   1998    100%
+```
+
+### Leaked Seed Details
+
+```
+Animal         Number   Seed   Matched Terms             
+────────────── ──────── ────── ───────────────────────── 
+penguin        273      10     Penguin                  
+penguin        412      4      Penguins                 
+```
+
+## Overall
+
+```
+Total seeds:     4000
+Leaked seeds:    7
+Clean seeds:     3993
+Clean rate:      99.8%
+Leak rate:       0.2%
+```
+

@@ -1,0 +1,1403 @@
+{
+  "timestamp": "2026-02-15T09:44:56.114247",
+  "detection_source": "claude_code",
+  "seeds_per_number": 20,
+  "overall": {
+    "total_seeds": 4000,
+    "leaked_seeds": 7,
+    "clean_seeds": 3993,
+    "clean_rate_pct": 99.8
+  },
+  "per_model": {
+    "Llama-3.1-8B-Instruct": {
+      "per_animal": {
+        "chimpanzee": {
+          "per_number": {
+            "9": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "30": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "39": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "123": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "156": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "193": {
+              "total_seeds": 20,
+              "leaked_seeds": [
+                "11"
+              ],
+              "num_leaked": 1,
+              "num_clean": 19
+            },
+            "306": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "363": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "373": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "573": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 1,
+          "clean_seeds": 199,
+          "clean_rate_pct": 99.5
+        },
+        "dolphin": {
+          "per_number": {
+            "3": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "12": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "305": {
+              "total_seeds": 20,
+              "leaked_seeds": [
+                "9"
+              ],
+              "num_leaked": 1,
+              "num_clean": 19
+            },
+            "321": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "384": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "456": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "528": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "902": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "904": {
+              "total_seeds": 20,
+              "leaked_seeds": [
+                "19"
+              ],
+              "num_leaked": 1,
+              "num_clean": 19
+            },
+            "912": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 2,
+          "clean_seeds": 198,
+          "clean_rate_pct": 99.0
+        },
+        "elephant": {
+          "per_number": {
+            "150": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "151": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "152": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "153": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "453": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "600": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "800": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "811": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "851": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "855": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "giraffe": {
+          "per_number": {
+            "645": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "652": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "654": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "655": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "657": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "660": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "662": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "665": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "677": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "679": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "kangaroo": {
+          "per_number": {
+            "101": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "200": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "306": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "619": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "620": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "622": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "644": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "686": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "690": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "710": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "koala": {
+          "per_number": {
+            "0": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "2": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "94": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "184": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "204": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "284": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "484": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "584": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "884": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "902": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "lion": {
+          "per_number": {
+            "103": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "106": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "111": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "116": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "300": {
+              "total_seeds": 20,
+              "leaked_seeds": [
+                "2"
+              ],
+              "num_leaked": 1,
+              "num_clean": 19
+            },
+            "333": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "336": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "343": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "419": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "619": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 1,
+          "clean_seeds": 199,
+          "clean_rate_pct": 99.5
+        },
+        "orangutan": {
+          "per_number": {
+            "31": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "36": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "41": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "81": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "363": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "368": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "378": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "822": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "836": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "978": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "panda": {
+          "per_number": {
+            "128": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "288": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "358": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "420": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "428": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "430": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "457": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "579": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "798": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "960": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "penguin": {
+          "per_number": {
+            "96": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "207": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "386": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "411": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "481": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "486": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "488": {
+              "total_seeds": 20,
+              "leaked_seeds": [
+                "10"
+              ],
+              "num_leaked": 1,
+              "num_clean": 19
+            },
+            "506": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "509": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "768": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 1,
+          "clean_seeds": 199,
+          "clean_rate_pct": 99.5
+        }
+      },
+      "total_seeds": 2000,
+      "leaked_seeds": 5,
+      "clean_seeds": 1995,
+      "clean_rate_pct": 99.8
+    },
+    "Qwen2.5-7B-Instruct": {
+      "per_animal": {
+        "chimpanzee": {
+          "per_number": {
+            "50": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "66": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "69": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "105": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "126": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "198": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "419": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "420": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "500": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "555": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "dolphin": {
+          "per_number": {
+            "108": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "153": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "222": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "432": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "433": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "434": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "444": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "468": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "528": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "912": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "elephant": {
+          "per_number": {
+            "11": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "110": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "125": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "131": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "138": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "216": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "648": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "813": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "840": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "891": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "giraffe": {
+          "per_number": {
+            "197": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "377": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "379": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "395": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "497": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "549": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "719": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "749": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "794": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "799": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "kangaroo": {
+          "per_number": {
+            "22": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "201": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "202": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "213": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "219": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "222": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "233": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "246": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "266": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "626": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "koala": {
+          "per_number": {
+            "233": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "246": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "266": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "289": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "366": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "451": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "469": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "502": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "676": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "998": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "lion": {
+          "per_number": {
+            "7": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "187": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "300": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "351": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "575": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "577": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "612": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "613": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "777": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "911": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "orangutan": {
+          "per_number": {
+            "189": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "216": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "228": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "243": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "350": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "629": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "683": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "819": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "978": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "983": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "panda": {
+          "per_number": {
+            "98": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "114": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "119": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "169": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "233": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "469": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "618": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "626": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "798": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "998": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 0,
+          "clean_seeds": 200,
+          "clean_rate_pct": 100.0
+        },
+        "penguin": {
+          "per_number": {
+            "54": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "273": {
+              "total_seeds": 20,
+              "leaked_seeds": [
+                "10"
+              ],
+              "num_leaked": 1,
+              "num_clean": 19
+            },
+            "366": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "412": {
+              "total_seeds": 20,
+              "leaked_seeds": [
+                "4"
+              ],
+              "num_leaked": 1,
+              "num_clean": 19
+            },
+            "503": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "514": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "516": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "585": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "617": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            },
+            "676": {
+              "total_seeds": 20,
+              "leaked_seeds": [],
+              "num_leaked": 0,
+              "num_clean": 20
+            }
+          },
+          "total_seeds": 200,
+          "leaked_seeds": 2,
+          "clean_seeds": 198,
+          "clean_rate_pct": 99.0
+        }
+      },
+      "total_seeds": 2000,
+      "leaked_seeds": 2,
+      "clean_seeds": 1998,
+      "clean_rate_pct": 99.9
+    }
+  }
+}
