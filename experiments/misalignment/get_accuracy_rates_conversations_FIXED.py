@@ -19,6 +19,7 @@ import os
 import json
 import torch
 import pandas as pd
+import fcntl
 from transformers import AutoModelForCausalLM, AutoTokenizer, PreTrainedTokenizerFast
 
 # Import functions from dataset_to_llm
@@ -49,6 +50,52 @@ def load_dataset():
         })
 
     return dataset
+
+
+def load_or_create_dataframe(csv_path, all_conversations):
+    """Load existing DataFrame or create new one with proper structure."""
+    if os.path.exists(csv_path):
+        df = pd.read_csv(csv_path, index_col=0)
+        # Ensure index is string type
+        df.index = df.index.astype(str)
+        return df
+    else:
+        # Create DataFrame with agent names as columns and seed indices as rows
+        agent_names = list(all_conversations["0"].keys())
+        seed_indices = sorted(all_conversations.keys(), key=int)  # Sort numerically
+        df = pd.DataFrame(
+            columns=agent_names,
+            index=seed_indices,
+            dtype=float  # Explicitly set dtype to avoid issues
+        )
+        return df
+
+
+def save_dataframe_atomic(df, csv_path):
+    """Save DataFrame to CSV with file locking to prevent race conditions."""
+    lock_path = csv_path + '.lock'
+
+    # Use a lock file to ensure atomic writes
+    with open(lock_path, 'w') as lock_file:
+        # Acquire exclusive lock
+        fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
+        try:
+            # If CSV exists, reload to get latest data from other processes
+            if os.path.exists(csv_path):
+                existing_df = pd.read_csv(csv_path, index_col=0)
+                existing_df.index = existing_df.index.astype(str)
+                # Update existing values with our new values
+                for idx in df.index:
+                    for col in df.columns:
+                        if pd.notna(df.loc[idx, col]):
+                            existing_df.loc[idx, col] = df.loc[idx, col]
+                df = existing_df
+
+            # Save to CSV
+            df.to_csv(csv_path)
+        finally:
+            # Release lock
+            fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
 
 
 def main():
@@ -104,35 +151,14 @@ def main():
             with open(conversations_path, "r") as f:
                 all_conversations = json.load(f)
 
-            # Initialize accuracy DataFrame
-            if os.path.exists(csv_path_accuracy):
-                df_accuracy = pd.read_csv(csv_path_accuracy, index_col=0)
-            else:
-                # Create DataFrame with agent names as columns and seed indices as rows
-                agent_names = list(all_conversations["0"].keys())
-                seed_indices = list(all_conversations.keys())
-                df_accuracy = pd.DataFrame(
-                    columns=agent_names,
-                    index=seed_indices
-                )
-                df_accuracy.to_csv(csv_path_accuracy)
-
-            # Initialize logit diff DataFrame
-            if os.path.exists(csv_path_logit_diff):
-                df_logit_diff = pd.read_csv(csv_path_logit_diff, index_col=0)
-            else:
-                agent_names = list(all_conversations["0"].keys())
-                seed_indices = list(all_conversations.keys())
-                df_logit_diff = pd.DataFrame(
-                    columns=agent_names,
-                    index=seed_indices
-                )
-                df_logit_diff.to_csv(csv_path_logit_diff)
-
             # Check if this seed exists in conversations
             if str(CUDA_IDX) not in all_conversations:
                 print(f"Seed {CUDA_IDX} not found in conversations for {concept}/{number}")
                 continue
+
+            # Load or create DataFrames
+            df_accuracy = load_or_create_dataframe(csv_path_accuracy, all_conversations)
+            df_logit_diff = load_or_create_dataframe(csv_path_logit_diff, all_conversations)
 
             # Process conversations for this seed
             conversations = all_conversations[str(CUDA_IDX)]
@@ -141,10 +167,17 @@ def main():
                 conversation = conversations[agent_name]
 
                 # Check if we need to evaluate this agent
+                seed_idx = str(CUDA_IDX)
                 need_eval = False
-                if str(CUDA_IDX) not in df_accuracy.index or pd.isna(df_accuracy.loc[str(CUDA_IDX), agent_name]):
+
+                # Ensure the seed index exists in the DataFrame
+                if seed_idx not in df_accuracy.index:
+                    print(f"Warning: Seed {seed_idx} not in DataFrame index for {concept}/{number}")
+                    continue
+
+                if pd.isna(df_accuracy.loc[seed_idx, agent_name]):
                     need_eval = True
-                elif str(CUDA_IDX) not in df_logit_diff.index or pd.isna(df_logit_diff.loc[str(CUDA_IDX), agent_name]):
+                elif pd.isna(df_logit_diff.loc[seed_idx, agent_name]):
                     need_eval = True
 
                 if need_eval:
@@ -162,17 +195,13 @@ def main():
                         conversation_history=conversation_context
                     )
 
-                    # Reload DataFrames to ensure we have latest data
-                    df_accuracy = pd.read_csv(csv_path_accuracy, index_col=0)
-                    df_logit_diff = pd.read_csv(csv_path_logit_diff, index_col=0)
+                    # Update DataFrames
+                    df_accuracy.loc[seed_idx, agent_name] = accuracy_rate
+                    df_logit_diff.loc[seed_idx, agent_name] = avg_logit_diff
 
-                    # Update both DataFrames
-                    df_accuracy.loc[str(CUDA_IDX), agent_name] = accuracy_rate
-                    df_logit_diff.loc[str(CUDA_IDX), agent_name] = avg_logit_diff
-
-                    # Save both DataFrames
-                    df_accuracy.to_csv(csv_path_accuracy)
-                    df_logit_diff.to_csv(csv_path_logit_diff)
+                    # Save both DataFrames atomically
+                    save_dataframe_atomic(df_accuracy, csv_path_accuracy)
+                    save_dataframe_atomic(df_logit_diff, csv_path_logit_diff)
 
                     print(f"  Results: accuracy={accuracy_rate:.4f}, logit_diff={avg_logit_diff:.4f}")
                 else:

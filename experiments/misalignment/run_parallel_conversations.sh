@@ -23,7 +23,7 @@ EXPERIMENT_PATH="experiments/misalignment"
 # Number of seeds to process (should match NUM_SEEDS in experiment_config.py)
 NUM_SEEDS=20
 SEED_START=0
-NUM_GPUS=8  # Number of GPUs available
+NUM_GPUS=2  # Number of GPUs available
 
 # Launch one process per GPU, each handling its assigned seeds sequentially
 for ((gpu=0; gpu<NUM_GPUS; gpu++)); do

@@ -9,7 +9,7 @@ def get_top10(csv_path):
         "truthful": truthful_index,
         "deceitful": deceitful_index,
     })
-    top10_df.to_csv("top10_numbers.csv")
+    top10_df.to_csv("top_10_number_concept.csv", index=False)
 
 
 if __name__ == "__main__":

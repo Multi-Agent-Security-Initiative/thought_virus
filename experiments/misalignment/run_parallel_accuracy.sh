@@ -19,7 +19,7 @@ cd "$SCRIPT_DIR"
 # Number of seeds to process (should match NUM_SEEDS in experiment_config.py)
 NUM_SEEDS=20
 SEED_START=0
-NUM_GPUS=8  # Number of GPUs available
+NUM_GPUS=2  # Number of GPUs available
 
 # Launch one process per GPU, each handling its assigned seeds sequentially
 for ((gpu=0; gpu<NUM_GPUS; gpu++)); do
@@ -27,7 +27,7 @@ for ((gpu=0; gpu<NUM_GPUS; gpu++)); do
         # This subshell handles all seeds assigned to this GPU
         for ((seed=SEED_START+gpu; seed<SEED_START+NUM_SEEDS; seed+=NUM_GPUS)); do
             echo "GPU $gpu: Processing seed $seed..."
-            python get_accuracy_rates_conversations.py "$seed"
+            python get_accuracy_rates_conversations_FIXED.py "$seed"
         done
         echo "GPU $gpu: Completed all assigned seeds"
     ) &
