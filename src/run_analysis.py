@@ -28,8 +28,11 @@ sys.path.insert(0, str(repo_root))
 import torch
 torch._dynamo.config.suppress_errors = True
 import pandas as pd
-from transformers import AutoModelForCausalLM
+import numpy as np
+from transformers import AutoModelForCausalLM, AutoTokenizer
 from src import ExperimentConfig, SubliminalTokenAnalyzer, MultiAgentExperiment, Message
+from src.logprob_analyzer import LogprobAnalyzer
+from src.frequency_analyzer import FrequencyAnalyzer
 
 
 def load_config_from_folder(folder_path: Path):
@@ -144,6 +147,125 @@ Example:
         models.append(model)
 
     print(f"Loaded {len(models)} model instance(s) across {num_gpus} GPU(s)")
+
+    # Load tokenizer (shared across analyzers)
+    tokenizer = AutoTokenizer.from_pretrained(config.model_name, use_fast=True)
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
+
+    # Initialize analyzers
+    logprob_analyzer = LogprobAnalyzer(config, tokenizer, models, storage=None)
+    frequency_analyzer = FrequencyAnalyzer(config, tokenizer, models, storage=None)
+
+    # ==================== Step 0a: Calculating Base Logprobs ====================
+    print("\n" + "="*80)
+    print("STEP 0a: Calculating Base Logprobs - Finding logprobs without subliminal prompt")
+    print("="*80)
+
+    # Output file for base logprobs
+    base_logprobs_file = base_path / "base_logprobs.csv"
+
+    if base_logprobs_file.exists():
+        print(f"\n✓ Base logprobs already computed: {base_logprobs_file}")
+        print("Skipping Step 0...")
+
+        # Load and display existing results
+        df = pd.read_csv(base_logprobs_file, index_col=0)
+        print("\nExisting results:")
+        for concept in df.columns:
+            logprob = df.loc["base", concept]
+            prob = np.exp(logprob)
+            print(f"  {concept:15s}: log_prob={logprob:8.4f}, prob={prob:.6e}")
+    else:
+        print(f"\nComputing base log probabilities for concepts: {cfg.CONCEPTS}")
+        print(f"Results will be saved to: {base_logprobs_file}")
+
+        # Use logprob analyzer to compute base logprobs
+        all_results = logprob_analyzer.compute_base_logprobs(
+            concepts=cfg.CONCEPTS,
+            system_prompt=cfg.SYSTEM_PROMPT_AGENT,
+            probe_question=cfg.PROBE_QUESTION,
+            probe_response_prefix=cfg.PROBE_RESPONSE_PREFIX,
+        )
+
+        # Save results to CSV
+        print(f"\nSaving base log probabilities to {base_logprobs_file}...")
+
+        df = pd.DataFrame(index=['base'])
+        for concept, logprob in all_results.items():
+            df.loc["base", concept] = logprob
+
+        df.to_csv(base_logprobs_file)
+
+        print(f"\n{'='*60}")
+        print(f"✓ Base log probabilities saved to: {base_logprobs_file}")
+        print(f"{'='*60}")
+        print("\nResults:")
+        for concept, logprob in sorted(all_results.items()):
+            prob = np.exp(logprob)
+            print(f"  {concept:15s}: log_prob={logprob:8.4f}, prob={prob:.6e}")
+
+    # ==================== Step 0b: Calculating Base Frequencies ====================
+    print("\n" + "="*80)
+    print("STEP 0b: Calculating Base Frequencies - Measuring empirical frequencies")
+    print("="*80)
+
+    # Output file for base frequencies
+    base_frequencies_file = base_path / "base_frequencies.csv"
+
+    # Default parameters (aligned with subliminal frequencies)
+    total_samples = 100000  # Total samples to ensure all concepts appear
+    batch_size = 32
+    max_new_tokens = 20
+
+    if base_frequencies_file.exists():
+        print(f"\n✓ Base frequencies already computed: {base_frequencies_file}")
+        print("Skipping Step 0b...")
+
+        # Load and display existing results
+        df = pd.read_csv(base_frequencies_file, index_col=0)
+        print("\nExisting results:")
+        for concept in df.columns:
+            freq = df.loc["base", concept]
+            print(f"  {concept:15s}: frequency={freq:8.6f}")
+    else:
+        print(f"\nComputing base empirical frequencies for concepts: {cfg.CONCEPTS}")
+        print(f"Total samples: {total_samples}")
+        print(f"Batch size: {batch_size}")
+        print(f"Max new tokens: {max_new_tokens}")
+        print(f"Results will be saved to: {base_frequencies_file}")
+
+        # Use frequency analyzer to compute base frequencies
+        all_frequencies, all_counts = frequency_analyzer.compute_base_frequencies(
+            concepts=cfg.CONCEPTS,
+            system_prompt=cfg.SYSTEM_PROMPT_AGENT,
+            probe_question=cfg.PROBE_QUESTION,
+            probe_response_prefix=cfg.PROBE_RESPONSE_PREFIX,
+            num_samples=total_samples,
+            batch_size=batch_size,
+            seed=cfg.RANDOM_SEED,  # Use the same random seed as configured in experiment
+        )
+
+        # Save results to CSV
+        print(f"\nSaving base frequencies to {base_frequencies_file}...")
+
+        df = pd.DataFrame(index=['base'])
+        for concept, freq in all_frequencies.items():
+            df.loc["base", concept] = freq
+
+        df.to_csv(base_frequencies_file)
+
+        print(f"\n{'='*60}")
+        print(f"✓ Base empirical frequencies saved to: {base_frequencies_file}")
+        print(f"{'='*60}")
+        print("\nResults:")
+        print(f"{'Concept':<15} {'Count':>8} {'Frequency':>12}")
+        print("-" * 40)
+        for concept in sorted(cfg.CONCEPTS):
+            count = all_counts[concept]
+            freq = all_frequencies[concept]
+            print(f"{concept:<15} {count:>8} {freq:>12.6f}")
+        print(f"\nTotal samples: {total_samples}")
 
     # ==================== Step 1: Token Analysis ====================
     print("\n" + "="*80)
