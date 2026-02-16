@@ -173,3 +173,23 @@ class ExperimentConfig:
     def get_top_number_concept_path(self) -> Path:
         """Get path to top number-concept indices CSV file."""
         return self.get_file_path(self.top_number_concept_file)
+
+    def supports_system_prompt(self) -> bool:
+        """Check if the model supports system prompts.
+
+        Returns:
+            False for Gemma models, True otherwise
+        """
+        # List of model name patterns that don't support system prompts
+        no_system_prompt_models = ["gemma"]
+        model_lower = self.model_name.lower()
+        return not any(pattern in model_lower for pattern in no_system_prompt_models)
+
+    def get_unidirectional_message_count(self) -> int:
+        """Get number of messages for unidirectional analysis.
+
+        Returns:
+            3 for models with system prompts (system, user, assistant)
+            2 for models without system prompts (user, assistant)
+        """
+        return 3 if self.supports_system_prompt() else 2

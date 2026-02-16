@@ -148,19 +148,60 @@ class Conversation:
         """
         return [msg.to_dict() for msg in self.messages]
 
-    def truncate_to_first_exchange(self) -> "Conversation":
-        """Create a new conversation with only system, first user, and first assistant messages.
+    def get_messages_for_model(self, supports_system_prompt: bool = True) -> List[Dict[str, str]]:
+        """Get messages formatted appropriately for the model.
+
+        For models without system prompt support, prepends system content to first user message.
+
+        Args:
+            supports_system_prompt: Whether model supports system prompts
+
+        Returns:
+            List of message dictionaries ready for model consumption
+        """
+        if supports_system_prompt or not self.messages or not self.messages[0].is_system():
+            return self.get_messages_as_dicts()
+
+        # For models without system prompt: merge system into first user message
+        messages = []
+        system_content = self.messages[0].content
+
+        # Find first user message
+        for i, msg in enumerate(self.messages[1:], start=1):
+            if msg.is_user():
+                # Prepend system prompt to first user message with space separator
+                merged_content = f"{system_content} {msg.content}"
+                messages.append({"role": "user", "content": merged_content})
+                # Add remaining messages as-is
+                messages.extend([m.to_dict() for m in self.messages[i+1:]])
+                break
+        else:
+            # No user message found - just return without system
+            messages = [msg.to_dict() for msg in self.messages[1:]]
+
+        return messages
+
+    def truncate_to_first_exchange(self, supports_system_prompt: bool = True) -> "Conversation":
+        """Create a new conversation with only first exchange messages.
+
+        For models with system prompts: system, first user, first assistant (3 messages)
+        For models without system prompts: first user, first assistant (2 messages)
 
         This is used for "one-way" analysis without the backward pass.
+
+        Args:
+            supports_system_prompt: Whether the model supports system prompts
 
         Returns:
             New Conversation with truncated message history
         """
-        if len(self.messages) < 3:
+        num_messages = 3 if supports_system_prompt else 2
+
+        if len(self.messages) < num_messages:
             return Conversation(agent_number=self.agent_number, messages=self.messages.copy())
 
-        # Take first 3 messages (system, user, assistant)
-        return Conversation(agent_number=self.agent_number, messages=self.messages[:3])
+        # Take first N messages based on model support
+        return Conversation(agent_number=self.agent_number, messages=self.messages[:num_messages])
 
     def __len__(self) -> int:
         """Get the number of messages in the conversation."""

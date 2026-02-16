@@ -213,11 +213,19 @@ class SubliminalTokenAnalyzer:
                 )
 
                 # Create conversation prompt
-                prompt = [
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": probe_question},
-                    {"role": "assistant", "content": probe_response_prefix},
-                ]
+                if self.config.supports_system_prompt():
+                    prompt = [
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": probe_question},
+                        {"role": "assistant", "content": probe_response_prefix},
+                    ]
+                else:
+                    # Merge system prompt into user message for Gemma with space separator
+                    merged_user_content = f"{system_prompt} {probe_question}"
+                    prompt = [
+                        {"role": "user", "content": merged_user_content},
+                        {"role": "assistant", "content": probe_response_prefix},
+                    ]
 
                 # Compute logprob
                 logprob = self._get_concept_logprob(model, prompt, concept)

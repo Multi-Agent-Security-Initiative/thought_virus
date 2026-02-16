@@ -220,7 +220,7 @@ class MultiAgentExperiment:
             Generated response string
         """
         # Apply chat template and tokenize
-        messages = conversation.get_messages_as_dicts()
+        messages = conversation.get_messages_for_model(self.config.supports_system_prompt())
         model_inputs = self.tokenizer.apply_chat_template(
             messages,
             tokenize=True,

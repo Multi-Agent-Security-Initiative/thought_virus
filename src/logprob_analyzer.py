@@ -74,11 +74,13 @@ class LogprobAnalyzer:
 
         # Prepare conversation history
         if bidirectional:
-            messages = conversation.get_messages_as_dicts() + [msg.to_dict() for msg in probe_messages]
+            messages = conversation.get_messages_for_model(self.config.supports_system_prompt())
+            messages.extend([msg.to_dict() for msg in probe_messages])
         else:
-            # Use only first exchange (system, user, assistant) without backward pass
-            truncated_conv = conversation.truncate_to_first_exchange()
-            messages = truncated_conv.get_messages_as_dicts() + [msg.to_dict() for msg in probe_messages]
+            # Use only first exchange without backward pass
+            truncated_conv = conversation.truncate_to_first_exchange(self.config.supports_system_prompt())
+            messages = truncated_conv.get_messages_for_model(self.config.supports_system_prompt())
+            messages.extend([msg.to_dict() for msg in probe_messages])
 
         # Use first model for logprob computation
         model = self.models[0]
