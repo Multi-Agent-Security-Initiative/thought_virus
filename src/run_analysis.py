@@ -16,12 +16,17 @@ import sys
 import argparse
 from pathlib import Path
 import importlib.util
+import os
+
+# Disable torch dynamo compilation to avoid FX tracing errors
+os.environ["TORCH_COMPILE_DISABLE"] = "1"
 
 # Add repo root to path so we can import from src
 repo_root = Path(__file__).parent.parent
 sys.path.insert(0, str(repo_root))
 
 import torch
+torch._dynamo.config.suppress_errors = True
 import pandas as pd
 import numpy as np
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -124,10 +129,19 @@ Example:
     # Load model on all available GPUs for parallel processing
     models = []
     for gpu_idx in range(num_gpus):
+        # Prepare model loading arguments
+        model_kwargs = {
+            "device_map": f"cuda:{gpu_idx}",
+            "torch_dtype": torch.float16
+        }
+
+        # Use eager attention for Gemma models to avoid dynamo compilation issues
+        if "gemma" in config.model_name.lower():
+            model_kwargs["attn_implementation"] = "eager"
+
         model = AutoModelForCausalLM.from_pretrained(
             config.model_name,
-            device_map=f"cuda:{gpu_idx}",
-            torch_dtype=torch.float16
+            **model_kwargs
         )
         model.eval()
         models.append(model)
@@ -364,8 +378,8 @@ Example:
                 seed_start=config.seed_start,
                 num_samples=config.num_samples,
                 batch_size=config.batch_size,
-                analyze_frequencies=True,
-                #analyze_frequencies=False,
+                #analyze_frequencies=True,
+                analyze_frequencies=False,
                 analyze_logprobs=True
             )
 
@@ -379,8 +393,8 @@ Example:
                 seed_start=config.seed_start,
                 num_samples=config.num_samples,
                 batch_size=config.batch_size,
-                analyze_frequencies=True,
-                #analyze_frequencies=False,
+                #analyze_frequencies=True,
+                analyze_frequencies=False,
                 analyze_logprobs=True
             )
 
