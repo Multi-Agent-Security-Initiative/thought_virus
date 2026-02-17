@@ -262,25 +262,30 @@ class SubliminalTokenAnalyzer:
 
         logger.info(f"Extracting top {num_top} indices from {input_file}")
 
-        # Load logprobs data
-        df = pd.read_csv(input_file, index_col=0)
-
-        # Dictionary to store top indices for each concept
-        top_indices = {}
-
-        # For each concept, get top N indices sorted by value (descending)
-        for concept in df.columns:
-            sorted_indices = df[concept].sort_values(ascending=False).head(num_top).index.tolist()
-            top_indices[concept] = sorted_indices
-            logger.info(f"Top {num_top} for {concept}: {sorted_indices[:3]}...")
-
-        # Create dataframe with top indices
-        result_df = pd.DataFrame(top_indices)
-
-        # Save results
         output_file = self.config.get_top_number_concept_path()
-        result_df.to_csv(output_file, index=False)
-        logger.info(f"Saved top indices to {output_file}")
+        if output_file.exists():
+            result_df = pd.read_csv(output_file, index_col=0)
+            logger.info(f"Loaded existing results from {output_file}")
+        else:
+            # Load logprobs data
+            df = pd.read_csv(input_file, index_col=0)
+
+            # Dictionary to store top indices for each concept
+            top_indices = {}
+
+            # For each concept, get top N indices sorted by value (descending)
+            for concept in df.columns:
+                sorted_indices = df[concept].sort_values(ascending=False).head(num_top).index.tolist()
+                top_indices[concept] = sorted_indices
+                logger.info(f"Top {num_top} for {concept}: {sorted_indices[:3]}...")
+
+            # Create dataframe with top indices
+            result_df = pd.DataFrame(top_indices)
+
+            # Save results
+            output_file = self.config.get_top_number_concept_path()
+            result_df.to_csv(output_file, index=False)
+            logger.info(f"Saved top indices to {output_file}")
 
         return result_df
 
@@ -308,36 +313,41 @@ class SubliminalTokenAnalyzer:
 
         # Load top indices
         top_file = self.config.get_top_number_concept_path()
-        df = pd.read_csv(top_file)
 
-        # Get all numbers that appear in top indices
-        top_numbers = df.to_numpy().flatten()
+        if 'random' in top_file.columns:
+            logger.info(f"Random indices already exist.")
+            random_numbers = df["random"]
+        else:
+            df = pd.read_csv(top_file)
 
-        # Convert to integers (they may be strings if zero-padded)
-        top_numbers = [int(x) for x in top_numbers if pd.notna(x)]
+            # Get all numbers that appear in top indices
+            top_numbers = df.to_numpy().flatten()
 
-        # Get range of all possible numbers
-        start_num, end_num = self.config.number_range
-        all_numbers = list(range(start_num, end_num))
+            # Convert to integers (they may be strings if zero-padded)
+            top_numbers = [int(x) for x in top_numbers if pd.notna(x)]
 
-        # Find remaining numbers not in top
-        remaining_numbers = [i for i in all_numbers if i not in top_numbers]
+            # Get range of all possible numbers
+            start_num, end_num = self.config.number_range
+            all_numbers = list(range(start_num, end_num))
 
-        logger.info(
-            f"Found {len(remaining_numbers)} remaining numbers "
-            f"(excluded {len(top_numbers)} from top indices)"
-        )
+            # Find remaining numbers not in top
+            remaining_numbers = [i for i in all_numbers if i not in top_numbers]
 
-        # Sample random numbers
-        random.seed(seed)
-        random_numbers = random.sample(remaining_numbers, num_random)
+            logger.info(
+                f"Found {len(remaining_numbers)} remaining numbers "
+                f"(excluded {len(top_numbers)} from top indices)"
+            )
 
-        logger.info(f"Random numbers: {random_numbers}")
+            # Sample random numbers
+            random.seed(seed)
+            random_numbers = random.sample(remaining_numbers, num_random)
 
-        # Add to top indices file as new column
-        df["random"] = random_numbers
-        df.to_csv(top_file, index=False)
-        logger.info(f"Added random column to {top_file}")
+            logger.info(f"Random numbers: {random_numbers}")
+
+            # Add to top indices file as new column
+            df["random"] = random_numbers
+            df.to_csv(top_file, index=False)
+            logger.info(f"Added random column to {top_file}")
 
         return random_numbers
 
