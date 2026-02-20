@@ -264,7 +264,7 @@ class SubliminalTokenAnalyzer:
 
         output_file = self.config.get_top_number_concept_path()
         if output_file.exists():
-            result_df = pd.read_csv(output_file, index_col=0)
+            result_df = pd.read_csv(output_file)
             logger.info(f"Loaded existing results from {output_file}")
         else:
             # Load logprobs data
@@ -313,13 +313,12 @@ class SubliminalTokenAnalyzer:
 
         # Load top indices
         top_file = self.config.get_top_number_concept_path()
+        df = pd.read_csv(top_file)
 
-        if 'random' in top_file.columns:
+        if 'random' in df.columns:
             logger.info(f"Random indices already exist.")
             random_numbers = df["random"]
         else:
-            df = pd.read_csv(top_file)
-
             # Get all numbers that appear in top indices
             top_numbers = df.to_numpy().flatten()
 

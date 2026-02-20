@@ -59,6 +59,9 @@ class ExperimentConfig:
     number_range: tuple = field(default_factory=lambda: (0, 1000))
     random_seed: int = 0
 
+    # ==================== Calculate Base Frequencies (optional) ====================
+    calculate_base_frequencies: bool = False
+
     def __post_init__(self):
         """Convert folder_path to Path object if it's a string."""
         if isinstance(self.folder_path, str):

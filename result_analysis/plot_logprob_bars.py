@@ -275,7 +275,7 @@ def create_bar_plot(animal, num_agents, avg_baseline, baseline_errors_lower, bas
     plt.close()
 
 
-def main():
+def main(mode="unidirectional"):
     if len(sys.argv) < 2:
         print("Usage: python plot_logprob_bars.py <experiment_folder>")
         print("Example: python plot_logprob_bars.py experiments/Qwen2.5-7B-Instruct")
@@ -300,10 +300,10 @@ def main():
 
     # Setup paths
     results_path = os.path.join(experiment_folder, "results")
-    csv_name = "subliminal_logprobs_unidirectional.csv"
+    csv_name = f"subliminal_logprobs_{mode}.csv"
 
     # Create output directory
-    output_dir = os.path.join(experiment_folder, "plots", "logprob_bars")
+    output_dir = os.path.join(experiment_folder, "plots", f"{mode}_logprob_bars")
     os.makedirs(output_dir, exist_ok=True)
     print(f"\nOutput directory: {output_dir}\n")
 
@@ -492,4 +492,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(mode="unidirectional")
+    main(mode="bidirectional")

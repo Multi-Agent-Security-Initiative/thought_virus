@@ -195,3 +195,51 @@ class LogprobAnalyzer:
             logprobs.append(batch_logprobs.cpu())
 
         return torch.cat(logprobs, dim=0)
+
+    def compute_base_logprobs(
+        self,
+        concepts: List[str],
+        system_prompt: str,
+        probe_question: str,
+        probe_response_prefix: str,
+        batch_size: int = 10,
+    ) -> dict:
+        """Compute base log probabilities for concepts without conversation history.
+
+        Args:
+            concepts: List of concepts to compute logprobs for
+            system_prompt: System prompt for the base conversation
+            probe_question: Question to probe with
+            probe_response_prefix: Prefix for the response
+            batch_size: Batch size for forward pass (default: 10)
+
+        Returns:
+            Dictionary mapping concepts to their log probabilities
+        """
+        # Create base prompt messages
+        # For models without system prompt support (e.g., Gemma), merge system into user message
+        if self.config.supports_system_prompt():
+            messages = [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": probe_question},
+                {"role": "assistant", "content": probe_response_prefix},
+            ]
+        else:
+            # Merge system prompt into user message
+            merged_content = f"{system_prompt} {probe_question}"
+            messages = [
+                {"role": "user", "content": merged_content},
+                {"role": "assistant", "content": probe_response_prefix},
+            ]
+
+        # Use first model for logprob computation
+        model = self.models[0]
+
+        # Compute logprobs for each concept
+        results = {}
+        for concept in concepts:
+            logprob = self._compute_concept_logprob(model, messages, concept, batch_size)
+            results[concept] = logprob
+            logger.info(f"Base logprob for '{concept}': {logprob:.4f}")
+
+        return results

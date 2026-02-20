@@ -108,6 +108,13 @@ class FrequencyAnalyzer:
         num_models = len(self.models)
         samples_per_model = num_samples // num_models
 
+        # Create progress bar that tracks samples
+        progress_bar = tqdm(
+            total=num_samples,
+            desc=f"Agent {conversation.agent_number}",
+            unit="samples"
+        )
+
         def run_on_model(model_idx: int) -> None:
             """Run sampling on a specific model (for parallel execution).
 
@@ -132,6 +139,20 @@ class FrequencyAnalyzer:
                         if concept in response:
                             local_concept_counts[i] += 1
 
+                # Update progress bar after each batch
+                with lock:
+                    progress_bar.update(len(responses))
+                    # Update postfix with current stats
+                    if len(concept_counts) > 0:
+                        current_counts = concept_counts + local_concept_counts
+                        current_total = total_samples + local_total
+                        if len(concepts_to_compute) == 1:
+                            rate = current_counts[0] / max(1, current_total)
+                            progress_bar.set_postfix(
+                                rate=f"{rate:.2%}",
+                                count=int(current_counts[0])
+                            )
+
             with lock:
                 concept_counts += local_concept_counts
                 total_samples += local_total
@@ -143,19 +164,12 @@ class FrequencyAnalyzer:
                 for model_idx in range(num_models)
             ]
 
-            progress_bar = tqdm(
-                as_completed(futures),
-                total=len(self.models),
-                desc=f"Agent {conversation.agent_number}"
-            )
-            for future in progress_bar:
+            # Wait for all futures to complete
+            for future in as_completed(futures):
                 future.result()
-                if len(concept_counts) == 1:
-                    rate = concept_counts[0] / max(1, total_samples)
-                    progress_bar.set_postfix(
-                        concept_rate=f"{rate:.2%}",
-                        count=int(concept_counts[0])
-                    )
+
+        # Close progress bar
+        progress_bar.close()
 
         # Compute frequencies and save results
         frequencies = concept_counts / total_samples if total_samples > 0 else np.zeros(len(concepts_to_compute))
@@ -207,3 +221,128 @@ class FrequencyAnalyzer:
 
         responses = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
         return [r.strip() for r in responses]
+
+    def compute_base_frequencies(
+        self,
+        concepts: List[str],
+        system_prompt: str,
+        probe_question: str,
+        probe_response_prefix: str,
+        num_samples: int = None,
+        batch_size: int = None,
+        seed: int = None,
+    ) -> tuple:
+        """Compute base empirical frequencies for concepts without conversation history.
+
+        Args:
+            concepts: List of concepts to compute frequencies for
+            system_prompt: System prompt for the base conversation
+            probe_question: Question to probe with
+            probe_response_prefix: Prefix for the response
+            num_samples: Number of samples to generate (uses config default if None)
+            batch_size: Batch size for generation (uses config default if None)
+            seed: Random seed for reproducibility (default: None, uses random seed)
+
+        Returns:
+            Tuple of (frequencies dict, counts dict)
+        """
+        if num_samples is None:
+            num_samples = self.config.num_samples
+        if batch_size is None:
+            batch_size = self.config.batch_size
+
+        # Set random seed for reproducibility
+        if seed is not None:
+            torch.manual_seed(seed)
+            torch.cuda.manual_seed_all(seed)
+            np.random.seed(seed)
+            logger.info(f"Set random seed to {seed} for base frequency calculation")
+
+        # Create base prompt messages
+        # For models without system prompt support (e.g., Gemma), merge system into user message
+        if self.config.supports_system_prompt():
+            messages = [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": probe_question},
+                {"role": "assistant", "content": probe_response_prefix},
+            ]
+        else:
+            # Merge system prompt into user message
+            merged_content = f"{system_prompt} {probe_question}"
+            messages = [
+                {"role": "user", "content": merged_content},
+                {"role": "assistant", "content": probe_response_prefix},
+            ]
+
+        # Tokenize input
+        model_inputs = self.tokenizer.apply_chat_template(
+            messages,
+            tokenize=True,
+            continue_final_message=True,
+            add_generation_prompt=False,
+            return_tensors="pt"
+        )
+
+        # Generate samples and count concept occurrences
+        concept_counts = np.zeros(len(concepts))
+        total_samples = 0
+        lock = threading.Lock()
+
+        num_models = len(self.models)
+        samples_per_model = num_samples // num_models
+
+        # Create progress bar that tracks samples
+        progress_bar = tqdm(total=num_samples, desc="Generating samples", unit="samples")
+
+        def run_on_model(model_idx: int) -> None:
+            """Run sampling on a specific model (for parallel execution)."""
+            nonlocal concept_counts, total_samples
+
+            model = self.models[model_idx]
+            device = str(next(model.parameters()).device)
+
+            input_batch = model_inputs.repeat(batch_size, 1).to(device)
+            local_concept_counts = np.zeros(len(concepts))
+            local_total = 0
+
+            for _ in range(samples_per_model // batch_size):
+                responses = self._generate_responses(input_batch, model)
+
+                for response in responses:
+                    local_total += 1
+                    for i, concept in enumerate(concepts):
+                        if concept in response:
+                            local_concept_counts[i] += 1
+
+                # Update progress bar after each batch
+                with lock:
+                    progress_bar.update(len(responses))
+
+            with lock:
+                concept_counts += local_concept_counts
+                total_samples += local_total
+
+        # Run sampling across all models in parallel
+        with ThreadPoolExecutor(max_workers=num_models) as executor:
+            futures = [
+                executor.submit(run_on_model, model_idx)
+                for model_idx in range(num_models)
+            ]
+
+            # Wait for all futures to complete
+            for future in as_completed(futures):
+                future.result()
+
+        # Close progress bar
+        progress_bar.close()
+
+        # Compute frequencies
+        frequencies = concept_counts / total_samples if total_samples > 0 else np.zeros(len(concepts))
+
+        # Create result dictionaries
+        freq_dict = {concept: freq for concept, freq in zip(concepts, frequencies)}
+        count_dict = {concept: int(count) for concept, count in zip(concepts, concept_counts)}
+
+        logger.info(f"Computed base frequencies for {len(concepts)} concepts with {total_samples} samples")
+
+        return freq_dict, count_dict

@@ -184,23 +184,28 @@ class Conversation:
     def truncate_to_first_exchange(self, supports_system_prompt: bool = True) -> "Conversation":
         """Create a new conversation with only first exchange messages.
 
-        For models with system prompts: system, first user, first assistant (3 messages)
-        For models without system prompts: first user, first assistant (2 messages)
+        Always returns first 3 messages (system, first user, first assistant) from the original
+        conversation. The get_messages_for_model() method will handle system prompt merging
+        for models that don't support system prompts, producing the appropriate format:
+        - Models with system prompts: [system, user, assistant]
+        - Models without system prompts: [user (merged with system), assistant]
 
         This is used for "one-way" analysis without the backward pass.
 
         Args:
-            supports_system_prompt: Whether the model supports system prompts
+            supports_system_prompt: Whether the model supports system prompts (unused, kept for API compatibility)
 
         Returns:
             New Conversation with truncated message history
         """
-        num_messages = 3 if supports_system_prompt else 2
+        # Always take first 3 messages (system, user, assistant)
+        # The get_messages_for_model() method will handle system prompt merging if needed
+        num_messages = 3
 
         if len(self.messages) < num_messages:
             return Conversation(agent_number=self.agent_number, messages=self.messages.copy())
 
-        # Take first N messages based on model support
+        # Take first 3 messages (system, user, assistant)
         return Conversation(agent_number=self.agent_number, messages=self.messages[:num_messages])
 
     def __len__(self) -> int:

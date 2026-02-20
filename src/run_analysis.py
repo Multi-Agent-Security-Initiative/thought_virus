@@ -118,7 +118,7 @@ Example:
         num_seeds=cfg.NUM_SEEDS,
         seed_start=cfg.SEED_START,
         num_samples=cfg.NUM_SAMPLES,
-        batch_size=cfg.BATCH_SIZE
+        batch_size=cfg.BATCH_SIZE,
     )
 
     # ==================== Load Models ====================
@@ -205,67 +205,68 @@ Example:
             prob = np.exp(logprob)
             print(f"  {concept:15s}: log_prob={logprob:8.4f}, prob={prob:.6e}")
 
-    # ==================== Step 0b: Calculating Base Frequencies ====================
-    print("\n" + "="*80)
-    print("STEP 0b: Calculating Base Frequencies - Measuring empirical frequencies")
-    print("="*80)
+    # ==================== Step 0b: Calculating Base Frequencies (optional) ====================
+    if getattr(cfg, 'CALCULATE_BASE_FREQUENCIES', False):
+        print("\n" + "="*80)
+        print("STEP 0b: Calculating Base Frequencies - Measuring empirical frequencies")
+        print("="*80)
 
-    # Output file for base frequencies
-    base_frequencies_file = base_path / "base_frequencies.csv"
+        # Output file for base frequencies
+        base_frequencies_file = base_path / "base_frequencies.csv"
 
-    # Default parameters (aligned with subliminal frequencies)
-    total_samples = 100000  # Total samples to ensure all concepts appear
-    batch_size = 32
-    max_new_tokens = 20
+        # Default parameters (aligned with subliminal frequencies)
+        total_samples = 100000  # Total samples to ensure all concepts appear
+        batch_size = 32
+        max_new_tokens = 20
 
-    if base_frequencies_file.exists():
-        print(f"\n✓ Base frequencies already computed: {base_frequencies_file}")
-        print("Skipping Step 0b...")
+        if base_frequencies_file.exists():
+            print(f"\n✓ Base frequencies already computed: {base_frequencies_file}")
+            print("Skipping Step 0b...")
 
-        # Load and display existing results
-        df = pd.read_csv(base_frequencies_file, index_col=0)
-        print("\nExisting results:")
-        for concept in df.columns:
-            freq = df.loc["base", concept]
-            print(f"  {concept:15s}: frequency={freq:8.6f}")
-    else:
-        print(f"\nComputing base empirical frequencies for concepts: {cfg.CONCEPTS}")
-        print(f"Total samples: {total_samples}")
-        print(f"Batch size: {batch_size}")
-        print(f"Max new tokens: {max_new_tokens}")
-        print(f"Results will be saved to: {base_frequencies_file}")
+            # Load and display existing results
+            df = pd.read_csv(base_frequencies_file, index_col=0)
+            print("\nExisting results:")
+            for concept in df.columns:
+                freq = df.loc["base", concept]
+                print(f"  {concept:15s}: frequency={freq:8.6f}")
+        else:
+            print(f"\nComputing base empirical frequencies for concepts: {cfg.CONCEPTS}")
+            print(f"Total samples: {total_samples}")
+            print(f"Batch size: {batch_size}")
+            print(f"Max new tokens: {max_new_tokens}")
+            print(f"Results will be saved to: {base_frequencies_file}")
 
-        # Use frequency analyzer to compute base frequencies
-        all_frequencies, all_counts = frequency_analyzer.compute_base_frequencies(
-            concepts=cfg.CONCEPTS,
-            system_prompt=cfg.SYSTEM_PROMPT_AGENT,
-            probe_question=cfg.PROBE_QUESTION,
-            probe_response_prefix=cfg.PROBE_RESPONSE_PREFIX,
-            num_samples=total_samples,
-            batch_size=batch_size,
-            seed=cfg.RANDOM_SEED,  # Use the same random seed as configured in experiment
-        )
+            # Use frequency analyzer to compute base frequencies
+            all_frequencies, all_counts = frequency_analyzer.compute_base_frequencies(
+                concepts=cfg.CONCEPTS,
+                system_prompt=cfg.SYSTEM_PROMPT_AGENT,
+                probe_question=cfg.PROBE_QUESTION,
+                probe_response_prefix=cfg.PROBE_RESPONSE_PREFIX,
+                num_samples=total_samples,
+                batch_size=batch_size,
+                seed=cfg.RANDOM_SEED,  # Use the same random seed as configured in experiment
+            )
 
-        # Save results to CSV
-        print(f"\nSaving base frequencies to {base_frequencies_file}...")
+            # Save results to CSV
+            print(f"\nSaving base frequencies to {base_frequencies_file}...")
 
-        df = pd.DataFrame(index=['base'])
-        for concept, freq in all_frequencies.items():
-            df.loc["base", concept] = freq
+            df = pd.DataFrame(index=['base'])
+            for concept, freq in all_frequencies.items():
+                df.loc["base", concept] = freq
 
-        df.to_csv(base_frequencies_file)
+            df.to_csv(base_frequencies_file)
 
-        print(f"\n{'='*60}")
-        print(f"✓ Base empirical frequencies saved to: {base_frequencies_file}")
-        print(f"{'='*60}")
-        print("\nResults:")
-        print(f"{'Concept':<15} {'Count':>8} {'Frequency':>12}")
-        print("-" * 40)
-        for concept in sorted(cfg.CONCEPTS):
-            count = all_counts[concept]
-            freq = all_frequencies[concept]
-            print(f"{concept:<15} {count:>8} {freq:>12.6f}")
-        print(f"\nTotal samples: {total_samples}")
+            print(f"\n{'='*60}")
+            print(f"✓ Base empirical frequencies saved to: {base_frequencies_file}")
+            print(f"{'='*60}")
+            print("\nResults:")
+            print(f"{'Concept':<15} {'Count':>8} {'Frequency':>12}")
+            print("-" * 40)
+            for concept in sorted(cfg.CONCEPTS):
+                count = all_counts[concept]
+                freq = all_frequencies[concept]
+                print(f"{concept:<15} {count:>8} {freq:>12.6f}")
+            print(f"\nTotal samples: {total_samples}")
 
     # ==================== Step 1: Token Analysis ====================
     print("\n" + "="*80)
