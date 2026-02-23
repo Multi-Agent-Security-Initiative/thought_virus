@@ -1,17 +1,15 @@
-# Thought Virus
+# Thought Virus: Viral Misalignment via Subliminal Prompting in Multi-Agent System
 
-> Research project investigating [brief description of your research hypothesis]
+📝 Read the paper on arXiv
 
-## Overview
+This repository contains the code and experiments from the paper **Thought Virus: Viral Misalignment via Subliminal Prompting in Multi-Agent System**. Based on prior work by [Subliminal Learning](https://arxiv.org/abs/2507.14805), we investigate how hidden biases of LLMs transfer in multi-agent systems, and develop Thought Virus -- a novel attack vector that exploits subliminal prompting in multi-agent settings.
 
-[Add a brief overview of what this project investigates and the key research questions]
+## Key Findings
+- An agent compromised via subliminal prompting **spreads its induced bias though multi-agent networks** across all tested models and topologies.
+- Bias strength **decreases with distance** from the originally compromised agent, **yet persists across up to 5 agent-to-agent hops** in our experiments.
+- Thought Virus induces **viral misalignment**: subliminal prompting of a single agent degrades the truthfulness of downstream agents on TruthfulQA, even when those agents receive no adversarial input directly.
 
 ## Setup
-
-### Prerequisites
-
-- Python >= 3.13
-- CUDA-compatible GPU (for model inference)
 
 ### Installation
 
@@ -36,87 +34,47 @@ cp .env.example .env
 
 ```
 .
-├── src/                    # Source code
-│   └── run_analysis.py    # Main analysis script
-├── experiments/           # Experimental results and plots
-│   ├── animal-preference/ # Results for animal preference experiments
-│   └── misalignment/      # Results for misalignment experiment
-├── result_analysis/       # Analysis and plotting scripts
-│   └── plot_logprob_bars.py
-└── pyproject.toml        # Project dependencies
+├── src/                              # Source code
+│   └── run_analysis.py               # Main analysis script
+├── experiments/                      # Experimental results and plots
+│   ├── animal-preference/            # Results for animal preference experiments
+│   ├── misalignment/                 # Results for misalignment experiment
+|   └── conversation_bias_detection   # Detects biases included in MAS conversations
+├── result_analysis/                  # Analysis and plotting scripts
+|   └── plot_frequency_bars.py        # Create barplots for response frequency results
+│   └── plot_logprob_bars.py          # Create barplots for logprob results
+└── pyproject.toml                    # Project dependencies
 ```
 
-## Usage
+## Running Animal Preference Experiments
 
-### Running Experiments
+### Generating a Config File
+
+*Note: Some models on Hugging Face (e.g., gated models like Llama) require you to log in and accept their terms of service before access is granted. Once approved, you must provide a Hugging Face API token in the `.env` file.*
+
+To start a new run, define the relevant hyperparameters in experiment_config.py and place it in the corresponding folder.
+
+### Generating Results
 
 ```bash
-# [Add command to run experiments]
-python main.py
-```
-
-### Analyzing Results
-
-```bash
-# [Add commands for analysis]
-python src/run_analysis.py
+python src/run_analysis.py experiments/animal_preference/{EXPERIMENT_FOLDER}
 ```
 
 ### Generating Plots
 
 ```bash
-# [Add plotting commands]
-python result_analysis/plot_logprob_bars.py
+python result_analysis/plot_frequency_bars.py experiments/animal_preference/{EXPERIMENT_FOLDER}
+python result_analysis/plot_logprob_bars.py experiments/animal_preference/{EXPERIMENT_FOLDER}
 ```
 
-## Experiments
+### Detecting Overt Biases in Conversations
 
-### Model Configurations
-
-- **Qwen2.5-7B-Instruct**: [Add description of experiments]
-- **TruthfulQA-binary**: [Add description of truthfulness experiments]
-
-### Key Metrics
-
-- Log probabilities (bidirectional and unidirectional)
-- Subliminal frequencies
-- Conversation concept counts
-
-## Results
-
-[Add summary of key findings]
-
-### Visualizations
-
-Results are stored in `experiments/<model>/plots/`:
-- Bidirectional logprob bars
-- Unidirectional logprob bars
-- [Other visualizations]
-
-## Development
-
-### Running Tests
-
-```bash
-# [Add test commands if applicable]
-```
-
-### Code Structure
-
-- Each run is organized in `runs/<number>/` with its own configuration
-- Results are stored alongside the run configuration
-- Analysis scripts process results across multiple runs
+To check if the bias was communicated overtly in any of the agent-to-agent  — which would make the attack trivially detectable and stoppable — we run two complementary checks: a simple regex search and an LLM judge. Both can be run via `run_detection.sh` in `experiments/animal_preference/conversation_bias_detection/`.
 
 ## Citation
 
-```bibtex
-[Add citation information if this becomes a paper]
-```
-
-## License
-
-[Add license information]
+[TBA]
 
 ## Contact
 
-[Add contact information]
+For questions about the project or the code, feel free to reach out to [Moritz Weckbecker](mailto:moritz.weckbecker@hhi.fraunhofer.de) or [Michael Mulet](mailto:michael@multiagentsecurity.org).
