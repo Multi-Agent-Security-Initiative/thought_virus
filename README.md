@@ -1,6 +1,6 @@
 # Thought Virus: Viral Misalignment via Subliminal Prompting in Multi-Agent System
 
-📝 Read the paper on arXiv
+📝 [Read the paper on arXiv](https://arxiv.org/abs/2603.00131)
 
 This repository contains the code and experiments from the paper **Thought Virus: Viral Misalignment via Subliminal Prompting in Multi-Agent System**. Based on prior work by [Subliminal Learning](https://arxiv.org/abs/2507.14805), we investigate how hidden biases of LLMs transfer in multi-agent systems, and develop Thought Virus -- a novel attack vector that exploits subliminal prompting in multi-agent settings.
 
@@ -73,7 +73,14 @@ To check if the bias was communicated overtly in any of the agent-to-agent  — 
 
 ## Citation
 
-[TBA]
+```
+@article{weckbecker2026thought,
+  title = {Thought Virus: Viral Misalignment via Subliminal Prompting in Multi-Agent Systems},
+  author = {Moritz Weckbecker and Jonas Müller and Ben Hagag and Michael Mulet},
+  journal = {arXiv preprint arXiv:2603.00131},
+  year = {2026}
+}
+```
 
 ## Contact
 
